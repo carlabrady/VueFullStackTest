@@ -8,8 +8,8 @@ app.use(morgan('combined'))
 app.use(bodyParser.json())
 app.use(cors())
 
-app.get('/status', (req, res) => {
-  res.sendStatus(200)
+app.post('/register', (req, res) => {
+  res.sendStatus(201)
 })
 
 app.listen(process.env.port || 8081)
