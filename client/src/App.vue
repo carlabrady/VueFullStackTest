@@ -1,33 +1,36 @@
 <template>
   <div id="app">
-    <router-view/>
+    <v-app>
+      <page-header/>
+      <main>
+        <v-container fluid>
+          <router-view></router-view>
+        </v-container>
+      </main>
+    </v-app>
   </div>
 </template>
 
 <script>
+import PageHeader from '@/components/Header.vue'
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+    PageHeader
+  }
 }
 </script>
 
-<style lang="scss">
-  @import "./assets/styles";
-  body {
-    background: url('./assets/images/background.jpg') no-repeat center center fixed;
-    background-size: cover;
-    &:after {
-      content: '';
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      background-color: $background-tint;
-      opacity: .3;
-      z-index: -1;
-    }
-    .application {
-      background: none;
-    }
-  }
+<style>
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+.danger-alert {
+  color: red;
+}
 </style>
