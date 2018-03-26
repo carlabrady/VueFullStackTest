@@ -9,13 +9,16 @@
     <v-spacer></v-spacer>
 
     <v-toolbar-items>
-      <v-btn flat dark to="login">
+      <v-btn v-if="!$store.state.isUserLoggedIn" flat dark to="login">
         Login
       </v-btn>
-    </v-toolbar-items>
-    <v-toolbar-items>
-      <v-btn flat dark to="register">
+
+      <v-btn v-if="!$store.state.isUserLoggedIn" flat dark to="register">
         New User
+      </v-btn>
+
+      <v-btn v-if="$store.state.isUserLoggedIn" flat dark to="/">
+        Log Out
       </v-btn>
     </v-toolbar-items>
   </v-toolbar>
