@@ -29,6 +29,8 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  background: url('./assets/images/background.jpg') no-repeat center center fixed;
+  background-size: cover;
 }
 .danger-alert {
   color: red;
