@@ -1,8 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
+import HelloNTY from '@/components/HelloNTY'
 import Register from '@/components/Register'
 import Login from '@/components/Login'
+import Sales from '@/components/Sales'
+import Buys from '@/components/Buys'
 
 Vue.use(Router)
 
@@ -11,7 +13,7 @@ export default new Router({
     {
       path: '/',
       name: 'root',
-      component: HelloWorld
+      component: HelloNTY
     },
     {
       path: '/register',
@@ -22,6 +24,16 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: Login
+    },
+    {
+      path: '/sales',
+      name: 'Sales',
+      component: Sales
+    },
+    {
+      path: '/buys',
+      name: 'Buys',
+      component: Buys
     }
   ]
 })
