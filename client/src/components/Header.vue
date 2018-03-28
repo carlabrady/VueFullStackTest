@@ -1,22 +1,31 @@
 <template>
   <div>
-    <v-navigation-drawer :clipped="clipped" v-model="drawer" enable-resize-watcher app dark>
-      <v-list>
-        <v-list-group v-for="item in items" :value="item.title" :key="item.title">
-          <v-list-tile
-                        :to="item.path == '#' ? '' : item.path"
-                        active-class="black--text">
-            <v-list-tile-content>
-              <v-list-tile-title >{{ item.title }}</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-        </v-list-group>
+    <v-navigation-drawer
+      fixed
+      v-model="drawer"
+      clipped
+      app
+      dark
+    >
+      <v-list dense>
+        <v-list-tile v-for="item in items" :value="item.title" :key="item.title"
+                      :to="item.path == '#' ? '' : item.path"
+                      active-class="black--text">
+          <v-list-tile-action>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title >{{ item.title }}</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
       </v-list>
     </v-navigation-drawer>
 
-    <v-toolbar fixed class="blue" dark>
-      <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-      <v-toolbar-title class="mr-4">
+    <v-toolbar fixed class="blue" dark clipped-left app>
+      <v-toolbar-title
+        class="ml-0 pl-3"
+        :class="$vuetify.breakpoint.width <= 1264 && 'pr-3'">
+        <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
         <v-btn to="/">
           NTY Report Portal
         </v-btn>
@@ -38,6 +47,9 @@
         </v-btn>
       </v-toolbar-items>
     </v-toolbar>
+    <v-footer color="blue" app>
+      <span class="white--text">&copy; 2018</span>
+    </v-footer>
   </div>
 </template>
 
@@ -46,20 +58,18 @@
 export default {
   data () {
     return {
-      drawer: true,
+      drawer: null,
       clipped: false,
       items: [
         {
-          action: 'local_activity',
           title: 'Sales',
-          path: '/sales',
-          items: []
+          icon: 'trending_up',
+          path: '/sales'
         },
         {
-          action: 'purchasing',
           title: 'Buys',
-          path: '/buys',
-          items: []
+          icon: 'attach_money',
+          path: '/buys'
         }
       ]
     }
