@@ -1,7 +1,6 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "start": "node src/app.js",
@@ -33,5 +32,6 @@
     "eslint-plugin-standard": "^3.0.1",
     "eslint": "^4.19.1",
     "nodemon": "^1.17.2"
-  }
+  },
+  "description": ""
 }
