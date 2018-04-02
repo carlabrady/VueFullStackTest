@@ -1,5 +1,5 @@
-// module.exports = {
-//   register (req, res) {
-//     res.sendStatus(201)
-//   }
-// }
+module.exports = {
+  register (req, res) {
+    res.sendStatus(201)
+  }
+}

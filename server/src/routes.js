@@ -1,5 +1,7 @@
+const AuthenticationController = require('./controllers/AuthenticationController')
+
 module.exports = (app) => {
-    app.post('/register', (req, res) => {
-        res.sendStatus(201)
-    })
+    app.post('/register',
+        AuthenticationController.register
+    )
 }
