@@ -1,8 +1,8 @@
 branch-defaults:
   default:
-    environment: serverWpassport-dev
+    environment: FrontEndTest
 environment-defaults:
-  serverWpassport-dev:
+  FrontEndTest:
     branch: null
     repository: null
 global:

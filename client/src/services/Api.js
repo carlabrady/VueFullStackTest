@@ -2,6 +2,6 @@ import axios from 'axios'
 
 export default () => {
   return axios.create({
-    baseURL: 'http://localhost:8081/'
+    baseURL: 'http://serverrebuild-dev.us-west-2.elasticbeanstalk.com/'
   })
 }
