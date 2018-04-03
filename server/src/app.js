@@ -2,6 +2,8 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const morgan = require('morgan')
+require('dotenv').config()
+
 const {sequelize} = require('./models')
 const config = require('./config/config')
 
@@ -16,8 +18,18 @@ app.get('/status', (req, res) => {
   res.sendStatus(200)
 })
 
-sequelize.sync()
+sequelize
+  .authenticate()
   .then(() => {
-    app.listen(process.env.port || config.port)
-    console.log('Server started on port ' + config.port)
-})
+    console.log('Connection has been established successfully.');
+  })
+  .catch(err => {
+    console.error('Unable to connect to the database:', err);
+  });
+
+app.listen(process.env.PORT || config.port)
+// sequelize.sync()
+//   .then(() => {
+//     app.listen(process.env.port || config.port)
+//     console.log('Server started on port ' + config.port)
+// })

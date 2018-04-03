@@ -4,16 +4,12 @@ const Sequelize = require('sequelize')
 const config = require('../config/config')
 const db = {}
 
-if (process.env.RDS_CONNECTION_URL) {
-  sequelize = new Sequelize(process.env.RDS_CONNECTION_URL)
-} else {
-  sequelize = new Sequelize(
-    config.db.database,
-    config.db.user,
-    config.db.password,
-    config.db.options
-  )
-}
+const sequelize = new Sequelize(
+  config.db.database,
+  config.db.user,
+  config.db.password,
+  config.db.options
+)
 
 fs
   .readdirSync(__dirname)
