@@ -14,19 +14,20 @@ module.exports = {
 
   async login (req, res) {
     try {
-      const {email, password} = req.body
+      const {Email, Password} = req.body
       const user = await ReportPortalUser.findOne({
-        wher: {
-          email: email
+        where: {
+          Email: Email
         }
       })
+      console.log('back from find one with ', user)
       if (!user) {
         return res.status(400).send({
           error: 'The login information was incorrect.'
         })
       }
 
-      const isPasswordValid = password === user.password
+      const isPasswordValid = Password === user.Password
       if (!isPasswordValid) {
         return res.status(400).send({
           error: 'The login information was incorrect.'
