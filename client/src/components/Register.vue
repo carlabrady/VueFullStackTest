@@ -52,8 +52,8 @@ export default {
     async register () {
       try {
         const response = await AuthenticationService.register({
-          email: this.email,
-          password: this.password
+          Email: this.email,
+          Password: this.password
         })
         this.$store.dispatch('setToken', response.data.token)
         this.$store.dispatch('setUser', response.data.user)
