@@ -1,5 +1,5 @@
-const {User} = require('../models')
-const jwt = require('jsonwebtoken')
+const {ReportPortalUser} = require('../models')
+const jwt = require ('jsonwebtoken')
 const config = require('../config/config')
 
 function jwtSignUser (user) {
@@ -12,7 +12,7 @@ function jwtSignUser (user) {
 module.exports = {
   async register (req, res) {
     try {
-      const user = await User.create(req.body)
+      const user = await ReportPortalUser.create(req.body)
       const userJson = user.toJSON()
       res.send({
         user: userJson,
@@ -24,25 +24,26 @@ module.exports = {
       })
     }
   },
+
   async login (req, res) {
     try {
-      const {email, password} = req.body
-      const user = await User.findOne({
+      const {Email, Password} = req.body
+      const user = await ReportPortalUser.findOne({
         where: {
-          email: email
+          Email: Email
         }
       })
 
       if (!user) {
-        return res.status(403).send({
-          error: 'The user information was incorrect'
+        return res.status(400).send({
+          error: 'The login information was incorrect.'
         })
       }
 
-      const isPasswordValid = await user.comparePassword(password)
+      const isPasswordValid = await user.comparePassword(Password)
       if (!isPasswordValid) {
-        return res.status(403).send({
-          error: 'The password information was incorrect'
+        return res.status(400).send({
+          error: 'The login information was incorrect.'
         })
       }
 
@@ -53,7 +54,7 @@ module.exports = {
       })
     } catch (err) {
       res.status(500).send({
-        error: 'An error has occured trying to log in'
+        error: 'An error has occured trying to login.'
       })
     }
   }
