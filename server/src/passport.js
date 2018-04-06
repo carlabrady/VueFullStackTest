@@ -11,10 +11,11 @@ passport.use(
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKey: config.authentication.jwtSecret
   }, async function (jwtPayload, done) {
+    console.log('after jwtstrategy ', jwtPayload)
     try {
       const user = await ReportPortalUser.findOne({
         where: {
-          id: jwtPayload.id
+          ReportPortalUserID: jwtPayload.ReportPortalUserID
         }
       })
       if (!user) {
@@ -24,7 +25,7 @@ passport.use(
     } catch (err) {
       return done(new Error(), false)
     }
-  })
+  }),
 )
 
 module.exports = null

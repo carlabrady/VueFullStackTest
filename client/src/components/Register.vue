@@ -21,6 +21,14 @@
               v-model="password"
               autocomplete="new-password"
             ></v-text-field>
+            <v-switch
+              :label="`Can modify Users: ${switch1.toString()}`"
+              v-model="switch1"
+            ></v-switch>
+            <v-switch
+              :label="`Can modify Stores: ${switch2.toString()}`"
+              v-model="switch2"
+            ></v-switch>
           </form>
           <br>
           <div class="danger-alert" v-html="error" />
@@ -45,18 +53,26 @@ export default {
     return {
       email: '',
       password: '',
+      switch1: false,
+      switch2: false,
       error: null
     }
   },
   methods: {
     async register () {
       try {
-        const response = await AuthenticationService.register({
-          Email: this.email,
-          Password: this.password
+        await AuthenticationService.register({
+          NewUser: {
+            Email: this.email,
+            Password: this.password,
+            IsUserAdministrator: this.switch1,
+            IsStoreAdministrator: this.switch2
+          },
+          CurrentUser: this.$store.state.user.ReportPortalUserID
         })
-        this.$store.dispatch('setToken', response.data.token)
-        this.$store.dispatch('setUser', response.data.user)
+        this.$router.push({
+          name: 'root'
+        })
       } catch (error) {
         this.error = error.response.data.error
       }

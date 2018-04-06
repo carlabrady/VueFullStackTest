@@ -3,6 +3,7 @@ const Joi = require('joi')
 //Validation of req JSON
 module.exports = {
   register (req, res, next) {
+    console.log('in authpolicy with ', req.body)
     const schema = {
       Email: Joi.string().email(),
       Password: Joi.string().regex(
@@ -12,7 +13,7 @@ module.exports = {
       IsStoreAdministrator: Joi.boolean()
     }
 
-    const {error} = Joi.validate(req.body, schema)
+    const {error} = Joi.validate(req.body.NewUser, schema)
 
     if (error) {
       switch (error.details[0].context.key) {
