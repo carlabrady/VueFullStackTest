@@ -3,8 +3,9 @@ const Joi = require('joi')
 //Validation of req JSON
 module.exports = {
   register (req, res, next) {
-    console.log('in authpolicy with ', req.body)
     const schema = {
+      FirstName: Joi.string(),
+      LastName: Joi.string(),
       Email: Joi.string().email(),
       Password: Joi.string().regex(
         new RegExp('^[a-zA-Z0-9]{8,32}$')

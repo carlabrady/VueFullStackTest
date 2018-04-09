@@ -24,6 +24,14 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       allowNull: false
     },
+    FirstName: {
+      type: DataTypes.STRING(128),
+      allowNull: false
+    },
+    LastName: {
+      type: DataTypes.STRING(128),
+      allowNull: false
+    },
     Email: {
       type: DataTypes.STRING(128),
       unique: true,
@@ -53,6 +61,8 @@ module.exports = (sequelize, DataTypes) => {
   }
     
   ReportPortalUser.associate = function (models) {
+    ReportPortalUser.hasOne(models.ReportPortalUserRelation, {as: 'ParentID', foreignKey: 'ParentReportPortalUserID'});
+    ReportPortalUser.hasOne(models.ReportPortalUserRelation, {as: 'ChildID', foreignKey: 'ChildReportPortalUserID'})
   }
 
   return ReportPortalUser

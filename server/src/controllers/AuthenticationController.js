@@ -11,7 +11,6 @@ function jwtSignUser (user) {
 
 module.exports = {
   async register (req, res) {
-    console.log('is this getting hit', req.body)
     try {
       const user = await ReportPortalUser.create(req.body.NewUser)
       const userJson = user.toJSON()

@@ -5,7 +5,7 @@ const isAuthenticated = require('./policies/isAuthenticated')
 
 module.exports = (app) => {
   app.post('/register',
-    isAuthenticated,
+    // isAuthenticated,
     AuthenticationControllerPolicy.register,
     AuthenticationController.register
   )
