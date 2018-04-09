@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true
       }
     }, {
+      timestamps: false,
       freezeTableName: true
     })
       

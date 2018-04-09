@@ -10,8 +10,8 @@ module.exports = (sequelize, DataTypes) => {
       unique: true,
       allowNull: false
     }
-  },
-  {
+  }, {
+    timestamps: false,
     freezeTableName: true
   })
     

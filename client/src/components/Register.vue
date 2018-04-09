@@ -3,7 +3,7 @@
     <v-flex xs6>
       <div class="white elevation-2">
         <v-toolbar flat dense class="blue" dark>
-          <v-toolbar-title>Register</v-toolbar-title>
+          <v-toolbar-title>Add User</v-toolbar-title>
         </v-toolbar>
 
         <div class="pl-4 pr-4 pt-2 pb-2">
@@ -55,6 +55,18 @@
                   ></v-switch>
                 </v-flex>
               </v-layout>
+              <v-select
+                autocomplete
+                label="Stores"
+                :items="stores"
+                v-model="selectedStores"
+                multiple
+                max-height="400"
+                hint="Select stores for user access."
+                persistent-hint
+                clearable
+                color="success">
+              </v-select>
             </v-container>
           </form>
           <br>
@@ -84,7 +96,9 @@ export default {
       password: '',
       userMod: false,
       storeMod: false,
-      error: null
+      error: null,
+      selectedStores: [],
+      stores: [10011, 10012, 10013]
     }
   },
   methods: {
