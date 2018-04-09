@@ -10,25 +10,52 @@
           <form
             name="report-register-form"
             autocomplete="off">
-            <v-text-field
-              label="Email"
-              v-model="email"
-            ></v-text-field>
-            <br>
-            <v-text-field
-              label="Password"
-              type="password"
-              v-model="password"
-              autocomplete="new-password"
-            ></v-text-field>
-            <v-switch
-              :label="`Can modify Users: ${switch1.toString()}`"
-              v-model="switch1"
-            ></v-switch>
-            <v-switch
-              :label="`Can modify Stores: ${switch2.toString()}`"
-              v-model="switch2"
-            ></v-switch>
+            <v-container fluid grid-list-md>
+              <v-layout row wrap>
+                <v-flex xs12 sm6>
+                  <v-text-field
+                    label="First Name"
+                    type="text"
+                    v-model="first"
+                  ></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6>
+                  <v-text-field
+                    label="Last Name"
+                    type="text"
+                    v-model="last"
+                    autocomplete="new-password"
+                  ></v-text-field>
+                </v-flex>
+                <v-flex xs12>
+                  <v-text-field
+                    label="Email"
+                    type="email"
+                    v-model="email"
+                  ></v-text-field>
+                </v-flex>
+                <v-flex xs12>
+                  <v-text-field
+                    label="Password"
+                    type="password"
+                    v-model="password"
+                    autocomplete="new-password"
+                  ></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6>
+                  <v-switch
+                    :label="`Can modify Users: ${userMod.toString()}`"
+                    v-model="userMod"
+                  ></v-switch>
+                </v-flex>
+                <v-flex xs12 sm6>
+                  <v-switch
+                    :label="`Can modify Stores: ${storeMod.toString()}`"
+                    v-model="storeMod"
+                  ></v-switch>
+                </v-flex>
+              </v-layout>
+            </v-container>
           </form>
           <br>
           <div class="danger-alert" v-html="error" />
@@ -51,10 +78,12 @@ import AuthenticationService from '@/services/AuthenticationService'
 export default {
   data () {
     return {
+      first: '',
+      last: '',
       email: '',
       password: '',
-      switch1: false,
-      switch2: false,
+      userMod: false,
+      storeMod: false,
       error: null
     }
   },
@@ -63,10 +92,12 @@ export default {
       try {
         await AuthenticationService.register({
           NewUser: {
+            FirstName: this.first,
+            LastName: this.last,
             Email: this.email,
             Password: this.password,
-            IsUserAdministrator: this.switch1,
-            IsStoreAdministrator: this.switch2
+            IsUserAdministrator: this.userMod,
+            IsStoreAdministrator: this.storeMod
           },
           CurrentUser: this.$store.state.user.ReportPortalUserID
         })

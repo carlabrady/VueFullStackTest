@@ -38,7 +38,7 @@
           Login
         </v-btn>
 
-        <v-btn v-if="$store.state.isUserLoggedIn" flat dark to="register">
+        <v-btn v-if="$store.state.isUserLoggedIn && $store.state.user.IsUserAdministrator" flat dark to="register">
           Add User
         </v-btn>
 
