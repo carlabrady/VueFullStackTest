@@ -68,16 +68,16 @@
                 color="success">
               </v-select>
             </v-container>
+            <br>
+            <div class="danger-alert" v-html="error" />
+            <br>
+            <v-btn
+              dark
+              class="green"
+              @click="register">
+              Submit
+            </v-btn>
           </form>
-          <br>
-          <div class="danger-alert" v-html="error" />
-          <br>
-          <v-btn
-            dark
-            class="green"
-            @click="register">
-            Register
-          </v-btn>
         </div>
       </div>
     </v-flex>
@@ -86,6 +86,8 @@
 
 <script>
 import AuthenticationService from '@/services/AuthenticationService'
+import {mapState} from 'vuex'
+import StoreService from '@/services/StoreService'
 
 export default {
   data () {
@@ -98,8 +100,20 @@ export default {
       storeMod: false,
       error: null,
       selectedStores: [],
-      stores: [10011, 10012, 10013]
+      stores: []
     }
+  },
+  computed: {
+    ...mapState([
+      'isUserLoggedIn',
+      'user'
+    ])
+  },
+  async mounted () {
+    if (this.isUserLoggedIn) {
+      this.stores = (await StoreService.get()).data
+    }
+    console.log('response from get stores ', this.stores)
   },
   methods: {
     async register () {
@@ -113,7 +127,8 @@ export default {
             IsUserAdministrator: this.userMod,
             IsStoreAdministrator: this.storeMod
           },
-          CurrentUser: this.$store.state.user.ReportPortalUserID
+          CurrentUser: this.$store.state.user.ReportPortalUserID,
+          NewUserStores: this.selectedStores
         })
         this.$router.push({
           name: 'root'
