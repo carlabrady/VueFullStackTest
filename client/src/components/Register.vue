@@ -113,7 +113,6 @@ export default {
     if (this.isUserLoggedIn) {
       this.stores = (await StoreService.get()).data
     }
-    console.log('response from get stores ', this.stores)
   },
   methods: {
     async register () {
