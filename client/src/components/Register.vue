@@ -139,10 +139,10 @@ export default {
             Email: this.email,
             Password: this.password,
             IsUserAdministrator: this.userMod,
-            IsStoreAdministrator: this.storeMod,
-            CurrentUser: this.$store.state.user.ReportPortalUserID,
-            NewUserStores: this.selectedStores
-          }
+            IsStoreAdministrator: this.storeMod
+          },
+          CurrentUser: this.$store.state.user.ReportPortalUserID,
+          NewUserStores: this.selectedStores
         })
         this.$router.push({
           name: 'root'

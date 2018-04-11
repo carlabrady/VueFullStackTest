@@ -10,9 +10,13 @@ module.exports = (sequelize, DataTypes) => {
       freezeTableName: true
     })
       
-    ReportPortalUserStoreInformation.associate = function (models) {
-      ReportPortalUserStoreInformation.belongsTo(models.ReportPortalUser, {foreignKey: 'ReportPortalUserID'}),
-      ReportPortalUserStoreInformation.belongsTo(models.StoreInformation, {foreignKey: 'StoreInformationID'})
+    ReportPortalUserStoreInformation.associate = (models) => {
+      ReportPortalUserStoreInformation.belongsTo(models.ReportPortalUser, {
+        foreignKey: 'ReportPortalUserID'
+      }),
+      ReportPortalUserStoreInformation.belongsTo(models.StoreInformation, {
+        foreignKey: 'StoreID'
+      })
     }
   
     return ReportPortalUserStoreInformation

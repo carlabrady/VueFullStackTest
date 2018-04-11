@@ -1,4 +1,6 @@
 const {ReportPortalUser} = require('../models')
+const {ReportPortalUserRelation} = require('../models')
+const {ReportPortalUserStoreInformation} = require('../models')
 const jwt = require ('jsonwebtoken')
 const config = require('../config/config')
 
@@ -12,12 +14,17 @@ function jwtSignUser (user) {
 module.exports = {
   async register (req, res) {
     try {
+      const currentUser = req.body.CurrentUser
       const user = await ReportPortalUser.create(req.body.NewUser)
-      const userJson = user.toJSON()
-      res.send({
-        user: userJson,
-        token: jwtSignUser(userJson)
-      })
+        // .then(user => {
+        //   user.setReportPortalUserRelation(
+        //     {
+        //       ParentReportPortalUserID: req.body.CurrentUser,
+        //       ChildReportPortalUserID: user.ReportPortalUserID
+        //     }
+        //   )
+        // })
+      res.sendStatus(201)
     } catch (err) {
       res.status(400).send({
         error: 'This email account is already in use.'

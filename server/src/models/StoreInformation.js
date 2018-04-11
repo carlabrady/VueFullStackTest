@@ -3,11 +3,12 @@ module.exports = (sequelize, DataTypes) => {
       StoreInformationID: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
-        primaryKey: true
+        allowNull: false
       },
       StoreID: {
         type: DataTypes.INTEGER,
         unique: true,
+        primaryKey: true,
         allowNull: false
       },
       Brand: {
