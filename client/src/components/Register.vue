@@ -66,7 +66,21 @@
                 persistent-hint
                 clearable
                 color="success">
-              </v-select>
+              </v-select><br/>
+
+              <v-layout row wrap v-for="store in selectedStores" :key="store">
+                <span class="title">Set permission for store #{{store}}</span>
+                <v-flex xs12 sm4 md4>
+                  <v-radio-group v-model="radioGroup">
+                    <v-radio
+                      v-for="n in 3"
+                      :key="n"
+                      :label="`Radio ${n}`"
+                      :value="n"
+                    ></v-radio>
+                  </v-radio-group>
+                </v-flex>
+              </v-layout>
             </v-container>
             <br>
             <div class="danger-alert" v-html="error" />
@@ -100,7 +114,8 @@ export default {
       storeMod: false,
       error: null,
       selectedStores: [],
-      stores: []
+      stores: [],
+      radioGroup: 1
     }
   },
   computed: {
@@ -124,10 +139,10 @@ export default {
             Email: this.email,
             Password: this.password,
             IsUserAdministrator: this.userMod,
-            IsStoreAdministrator: this.storeMod
-          },
-          CurrentUser: this.$store.state.user.ReportPortalUserID,
-          NewUserStores: this.selectedStores
+            IsStoreAdministrator: this.storeMod,
+            CurrentUser: this.$store.state.user.ReportPortalUserID,
+            NewUserStores: this.selectedStores
+          }
         })
         this.$router.push({
           name: 'root'
