@@ -55,7 +55,22 @@
                   ></v-switch>
                 </v-flex>
               </v-layout>
-              <v-select
+              <div>
+                <label class="typo__label">Stores</label>
+                <multiselect
+                  v-model="value"
+                  :options="options"
+                  :multiple="true"
+                  group-values="libs"
+                  group-label="language"
+                  :group-select="true"
+                  placeholder="Type to search"
+                  track-by="name"
+                  label="name">
+                    <span slot="noResult">Oops! No elements found. Consider changing the search query.</span>
+                  </multiselect>
+              </div>
+              <!-- <v-select
                 autocomplete
                 label="Stores"
                 :items="stores"
@@ -70,17 +85,19 @@
 
               <v-layout row wrap v-for="store in selectedStores" :key="store">
                 <span class="title">Set permission for store #{{store}}</span>
-                <v-flex xs12 sm4 md4>
-                  <v-radio-group v-model="radioGroup">
-                    <v-radio
-                      v-for="n in 3"
-                      :key="n"
-                      :label="`Radio ${n}`"
-                      :value="n"
-                    ></v-radio>
-                  </v-radio-group>
+                <v-flex xs12 sm3>
+                  <v-switch
+                    :label="`View reports: ${store.userView.toString()}`"
+                    v-model="store.userView"
+                  ></v-switch>
                 </v-flex>
-              </v-layout>
+                <v-flex xs12 sm3>
+                  <v-switch
+                    :label="`Receive emails: ${store.userEmail.toString()}`"
+                    v-model="store.userEmail"
+                  ></v-switch>
+                </v-flex>
+              </v-layout> -->
             </v-container>
             <br>
             <div class="danger-alert" v-html="error" />
@@ -102,8 +119,12 @@
 import AuthenticationService from '@/services/AuthenticationService'
 import {mapState} from 'vuex'
 import StoreService from '@/services/StoreService'
+import Multiselect from 'vue-multiselect'
 
 export default {
+  components: {
+    Multiselect
+  },
   data () {
     return {
       first: '',
@@ -113,8 +134,29 @@ export default {
       userMod: false,
       storeMod: false,
       error: null,
-      selectedStores: [],
-      stores: [],
+      value: [],
+      options: [{
+        language: 'Device Pitstop',
+        libs: [
+          {name: '10011'},
+          {name: '10012'},
+          {name: '10013'}
+        ]
+      },
+      {
+        language: 'Clothing Exchange',
+        libs: [
+          {name: '20000'},
+          {name: '20010'}
+        ]
+      },
+      {
+        language: 'Children\'s Orchard',
+        libs: [
+          {name: '3000'},
+          {name: '3001'}
+        ]
+      }],
       radioGroup: 1
     }
   },
@@ -126,7 +168,7 @@ export default {
   },
   async mounted () {
     if (this.isUserLoggedIn) {
-      this.stores = (await StoreService.get()).data
+      this.stores = (await StoreService.get())
     }
   },
   methods: {
