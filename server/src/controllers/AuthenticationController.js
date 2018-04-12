@@ -15,15 +15,24 @@ module.exports = {
   async register (req, res) {
     try {
       const currentUser = req.body.CurrentUser
+      const stores = req.body.NewUserStores
       const user = await ReportPortalUser.create(req.body.NewUser)
-        // .then(user => {
-        //   user.setReportPortalUserRelation(
-        //     {
-        //       ParentReportPortalUserID: req.body.CurrentUser,
-        //       ChildReportPortalUserID: user.ReportPortalUserID
-        //     }
-        //   )
-        // })
+        .then(user => {
+          return ReportPortalUserRelation.create(
+            {
+              ParentReportPortalUserID: req.body.CurrentUser,
+              ChildReportPortalUserID: user.ReportPortalUserID
+            }
+          )
+        })
+        .then(user => {
+          stores.forEach(store => {
+            return ReportPortalUserStoreInformation.create({
+              ReportPortalUserID: user.ChildReportPortalUserID,
+              StoreID: store
+            })
+          })
+        })
       res.sendStatus(201)
     } catch (err) {
       res.status(400).send({
