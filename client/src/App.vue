@@ -23,7 +23,7 @@ export default {
 
 <style>
 @import url('http://fonts.googleapis.com/css?family=Raleway:300,700');
-@import "vue-multiselect/dist/vue-multiselect.min.css";
+@import  "@riophae/vue-treeselect/dist/vue-treeselect.min.css";
 
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

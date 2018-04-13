@@ -1,6 +1,6 @@
 <template>
-  <v-layout column>
-    <v-flex xs6>
+  <v-layout>
+    <v-flex>
       <div class="white elevation-2">
         <v-toolbar flat dense class="blue" dark>
           <v-toolbar-title>Add User</v-toolbar-title>
@@ -56,19 +56,22 @@
                 </v-flex>
               </v-layout>
               <div>
-                <label class="typo__label">Stores</label>
-                <multiselect
-                  v-model="value"
+                <treeselect
+                  name="storeSelect"
+                  :multiple="multiple"
+                  :clearable="clearable"
+                  :searchable="searchable"
+                  :disabled="disabled"
+                  :open-on-click="openOnClick"
+                  :open-on-focus="openOnFocus"
+                  :clear-on-select="clearOnSelect"
+                  :close-on-select="closeOnSelect"
+                  :always-open="alwaysOpen"
                   :options="options"
-                  :multiple="true"
-                  group-values="libs"
-                  group-label="language"
-                  :group-select="true"
-                  placeholder="Type to search"
-                  track-by="name"
-                  label="name">
-                    <span slot="noResult">Oops! No elements found. Consider changing the search query.</span>
-                  </multiselect>
+                  :value-consists-of="valueConsistsOf"
+                  :max-height="200"
+                  v-model="value"
+                  />
               </div>
               <!-- <v-select
                 autocomplete
@@ -81,9 +84,9 @@
                 persistent-hint
                 clearable
                 color="success">
-              </v-select><br/>
+              </v-select><br/> -->
 
-              <v-layout row wrap v-for="store in selectedStores" :key="store">
+              <!-- <v-layout row wrap v-for="store in selectedStores" :key="store">
                 <span class="title">Set permission for store #{{store}}</span>
                 <v-flex xs12 sm3>
                   <v-switch
@@ -119,11 +122,11 @@
 import AuthenticationService from '@/services/AuthenticationService'
 import {mapState} from 'vuex'
 import StoreService from '@/services/StoreService'
-import Multiselect from 'vue-multiselect'
+import Treeselect from '@riophae/vue-treeselect'
 
 export default {
   components: {
-    Multiselect
+    Treeselect
   },
   data () {
     return {
@@ -134,30 +137,64 @@ export default {
       userMod: false,
       storeMod: false,
       error: null,
+      // selectedStores: [],
+      // stores: []
+      multiple: true,
+      clearable: true,
+      searchable: true,
+      disabled: false,
+      openOnClick: true,
+      openOnFocus: false,
+      clearOnSelect: true,
+      closeOnSelect: false,
+      alwaysOpen: false,
       value: [],
+      valueConsistsOf: 'LEAF_PRIORITY',
       options: [{
-        language: 'Device Pitstop',
-        libs: [
-          {name: '10011'},
-          {name: '10012'},
-          {name: '10013'}
+        id: 'Device Pitstop',
+        label: 'Device Pitstop',
+        children: [
+          {
+            id: '10011',
+            label: '10011'
+          },
+          {
+            id: '10012',
+            label: '10012'
+          },
+          {
+            id: '10013',
+            label: '10013'
+          }
         ]
       },
       {
-        language: 'Clothing Exchange',
-        libs: [
-          {name: '20000'},
-          {name: '20010'}
+        id: 'Clothing Exchange',
+        label: 'Clothing Exchange',
+        children: [
+          {
+            id: '20000',
+            label: '20000'
+          },
+          {
+            id: '20001',
+            label: '20010'
+          }
         ]
       },
       {
-        language: 'Children\'s Orchard',
-        libs: [
-          {name: '3000'},
-          {name: '3001'}
+        id: 'Children\'s Orchard',
+        label: 'Children\'s Orchard',
+        children: [
+          {
+            id: '32000',
+            label: '32000'
+          },
+          {
+            id: '32001',
+            label: '32001'}
         ]
-      }],
-      radioGroup: 1
+      }]
     }
   },
   computed: {
@@ -168,7 +205,7 @@ export default {
   },
   async mounted () {
     if (this.isUserLoggedIn) {
-      this.stores = (await StoreService.get())
+      this.stores = (await StoreService.get()).data
     }
   },
   methods: {
@@ -198,6 +235,7 @@ export default {
 </script>
 
 <style scoped>
+
 .toolbar__title {
   color: white;
 }
