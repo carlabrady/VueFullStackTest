@@ -22,6 +22,9 @@ export default {
 </script>
 
 <style>
+@import url('http://fonts.googleapis.com/css?family=Raleway:300,700');
+@import  "@riophae/vue-treeselect/dist/vue-treeselect.min.css";
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

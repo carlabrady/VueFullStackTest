@@ -55,32 +55,27 @@
                   ></v-switch>
                 </v-flex>
               </v-layout>
-              <v-select
-                autocomplete
-                label="Stores"
-                :items="stores"
-                v-model="selectedStores"
-                multiple
-                max-height="400"
-                hint="Select stores for user access."
-                persistent-hint
-                clearable
-                color="success">
-              </v-select><br/>
-
-              <v-layout row wrap v-for="store in selectedStores" :key="store">
-                <span class="title">Set permission for store #{{store}}</span>
-                <v-flex xs12 sm4 md4>
-                  <v-radio-group v-model="radioGroup">
-                    <v-radio
-                      v-for="n in 3"
-                      :key="n"
-                      :label="`Radio ${n}`"
-                      :value="n"
-                    ></v-radio>
-                  </v-radio-group>
-                </v-flex>
-              </v-layout>
+              <div>
+                <treeselect
+                  name="storeSelect"
+                  placeholder="Assign stores to new user"
+                  :load-children-options="loadChildrenOptions"
+                  :multiple="multiple"
+                  :clearable="clearable"
+                  :searchable="searchable"
+                  :disabled="disabled"
+                  :open-on-click="openOnClick"
+                  :open-on-focus="openOnFocus"
+                  :clear-on-select="clearOnSelect"
+                  :close-on-select="closeOnSelect"
+                  :always-open="alwaysOpen"
+                  :options="options"
+                  :value-consists-of="valueConsistsOf"
+                  :max-height="200"
+                  v-model="value"
+                  />
+              </div><br/>
+              <user-permission-table />
             </v-container>
             <br>
             <div class="danger-alert" v-html="error" />
@@ -102,8 +97,14 @@
 import AuthenticationService from '@/services/AuthenticationService'
 import {mapState} from 'vuex'
 import StoreService from '@/services/StoreService'
+import Treeselect from '@riophae/vue-treeselect'
+import UserPermissionTable from './UserPermissionTable'
 
 export default {
+  components: {
+    Treeselect,
+    UserPermissionTable
+  },
   data () {
     return {
       first: '',
@@ -113,9 +114,32 @@ export default {
       userMod: false,
       storeMod: false,
       error: null,
-      selectedStores: [],
-      stores: [],
-      radioGroup: 1
+      multiple: true,
+      clearable: true,
+      searchable: true,
+      disabled: false,
+      openOnClick: true,
+      openOnFocus: false,
+      clearOnSelect: true,
+      closeOnSelect: false,
+      alwaysOpen: false,
+      value: [],
+      valueConsistsOf: 'LEAF_PRIORITY',
+      options: [{
+        id: '1',
+        label: 'Device Pitstop',
+        children: null
+      },
+      {
+        id: '2',
+        label: 'Clothing Exchange',
+        children: null
+      },
+      {
+        id: '3',
+        label: 'Children\'s Orchard',
+        children: null
+      }]
     }
   },
   computed: {
@@ -124,12 +148,53 @@ export default {
       'user'
     ])
   },
-  async mounted () {
-    if (this.isUserLoggedIn) {
-      this.stores = (await StoreService.get()).data
-    }
-  },
   methods: {
+    async loadChildrenOptions (parent, callback/*, id */) {
+      const DPstores = []
+      const CEstores = []
+      const COstores = []
+      if (this.isUserLoggedIn) {
+        this.stores = (await StoreService.get()).data
+        this.stores.forEach(store => {
+          let newSelect = {
+            id: store,
+            label: store.toString()
+          }
+          switch (store.toString().substring(0, 1)) {
+            case '1':
+              DPstores.push(newSelect)
+              break
+            case '2':
+              CEstores.push(newSelect)
+              break
+            case '3':
+              COstores.push(newSelect)
+              break
+            default:
+              console.log(store.toString().substring(0, 1))
+          }
+        })
+        console.log(DPstores, CEstores, COstores)
+      }
+      switch (parent.id) {
+        case '1': {
+          const children = DPstores
+          callback(null, children)
+          break
+        }
+        case '2': {
+          const children = CEstores
+          callback(null, children)
+          break
+        }
+        case '3': {
+          const children = COstores
+          callback(null, children)
+          break
+        }
+        default:
+      }
+    },
     async register () {
       try {
         await AuthenticationService.register({
