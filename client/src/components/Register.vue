@@ -58,6 +58,7 @@
               <div>
                 <treeselect
                   name="storeSelect"
+                  placeholder="Assign stores to new user"
                   :multiple="multiple"
                   :clearable="clearable"
                   :searchable="searchable"
@@ -73,6 +74,7 @@
                   v-model="value"
                   />
               </div>
+              <p>{{options}}</p>
               <!-- <v-select
                 autocomplete
                 label="Stores"
@@ -151,49 +153,19 @@ export default {
       value: [],
       valueConsistsOf: 'LEAF_PRIORITY',
       options: [{
-        id: 'Device Pitstop',
+        id: 'devicePitstop',
         label: 'Device Pitstop',
-        children: [
-          {
-            id: '10011',
-            label: '10011'
-          },
-          {
-            id: '10012',
-            label: '10012'
-          },
-          {
-            id: '10013',
-            label: '10013'
-          }
-        ]
+        children: []
       },
       {
-        id: 'Clothing Exchange',
+        id: 'clothingExchange',
         label: 'Clothing Exchange',
-        children: [
-          {
-            id: '20000',
-            label: '20000'
-          },
-          {
-            id: '20001',
-            label: '20010'
-          }
-        ]
+        children: []
       },
       {
-        id: 'Children\'s Orchard',
+        id: 'childrensOrchard',
         label: 'Children\'s Orchard',
-        children: [
-          {
-            id: '32000',
-            label: '32000'
-          },
-          {
-            id: '32001',
-            label: '32001'}
-        ]
+        children: []
       }]
     }
   },
@@ -203,9 +175,36 @@ export default {
       'user'
     ])
   },
-  async mounted () {
+  async beforeMount () {
     if (this.isUserLoggedIn) {
       this.stores = (await StoreService.get()).data
+      this.stores.forEach(store => {
+        let newSelect = {
+          id: store,
+          label: store.toString()
+        }
+        switch (store.toString().substring(0, 1)) {
+          case '1':
+            this.options[0].children.push(newSelect)
+            break
+          case '2':
+            this.options[1].children.push(newSelect)
+            break
+          case '3':
+            this.options[2].children.push(newSelect)
+            break
+          case '4':
+            this.options[3].children.push(newSelect)
+            break
+          case '5':
+            this.options[4].children.push(newSelect)
+            break
+          default:
+            console.log(store.toString().substring(0, 1))
+        }
+      })
+      console.log(this.options)
+      return this.options
     }
   },
   methods: {
