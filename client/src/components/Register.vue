@@ -59,6 +59,7 @@
                 <treeselect
                   name="storeSelect"
                   placeholder="Assign stores to new user"
+                  :load-children-options="loadChildrenOptions"
                   :multiple="multiple"
                   :clearable="clearable"
                   :searchable="searchable"
@@ -75,34 +76,6 @@
                   />
               </div>
               <p>{{options}}</p>
-              <!-- <v-select
-                autocomplete
-                label="Stores"
-                :items="stores"
-                v-model="selectedStores"
-                multiple
-                max-height="400"
-                hint="Select stores for user access."
-                persistent-hint
-                clearable
-                color="success">
-              </v-select><br/> -->
-
-              <!-- <v-layout row wrap v-for="store in selectedStores" :key="store">
-                <span class="title">Set permission for store #{{store}}</span>
-                <v-flex xs12 sm3>
-                  <v-switch
-                    :label="`View reports: ${store.userView.toString()}`"
-                    v-model="store.userView"
-                  ></v-switch>
-                </v-flex>
-                <v-flex xs12 sm3>
-                  <v-switch
-                    :label="`Receive emails: ${store.userEmail.toString()}`"
-                    v-model="store.userEmail"
-                  ></v-switch>
-                </v-flex>
-              </v-layout> -->
             </v-container>
             <br>
             <div class="danger-alert" v-html="error" />
@@ -139,8 +112,6 @@ export default {
       userMod: false,
       storeMod: false,
       error: null,
-      // selectedStores: [],
-      // stores: []
       multiple: true,
       clearable: true,
       searchable: true,
@@ -153,19 +124,19 @@ export default {
       value: [],
       valueConsistsOf: 'LEAF_PRIORITY',
       options: [{
-        id: 'devicePitstop',
+        id: '1',
         label: 'Device Pitstop',
-        children: []
+        children: null
       },
       {
-        id: 'clothingExchange',
+        id: '2',
         label: 'Clothing Exchange',
-        children: []
+        children: null
       },
       {
-        id: 'childrensOrchard',
+        id: '3',
         label: 'Children\'s Orchard',
-        children: []
+        children: null
       }]
     }
   },
@@ -175,39 +146,53 @@ export default {
       'user'
     ])
   },
-  async beforeMount () {
-    if (this.isUserLoggedIn) {
-      this.stores = (await StoreService.get()).data
-      this.stores.forEach(store => {
-        let newSelect = {
-          id: store,
-          label: store.toString()
-        }
-        switch (store.toString().substring(0, 1)) {
-          case '1':
-            this.options[0].children.push(newSelect)
-            break
-          case '2':
-            this.options[1].children.push(newSelect)
-            break
-          case '3':
-            this.options[2].children.push(newSelect)
-            break
-          case '4':
-            this.options[3].children.push(newSelect)
-            break
-          case '5':
-            this.options[4].children.push(newSelect)
-            break
-          default:
-            console.log(store.toString().substring(0, 1))
-        }
-      })
-      console.log(this.options)
-      return this.options
-    }
-  },
   methods: {
+    async loadChildrenOptions (parent, callback/*, id */) {
+      const DPstores = []
+      const CEstores = []
+      const COstores = []
+      if (this.isUserLoggedIn) {
+        this.stores = (await StoreService.get()).data
+        this.stores.forEach(store => {
+          let newSelect = {
+            id: store,
+            label: store.toString()
+          }
+          switch (store.toString().substring(0, 1)) {
+            case '1':
+              DPstores.push(newSelect)
+              break
+            case '2':
+              CEstores.push(newSelect)
+              break
+            case '3':
+              COstores.push(newSelect)
+              break
+            default:
+              console.log(store.toString().substring(0, 1))
+          }
+        })
+        console.log(DPstores, CEstores, COstores)
+      }
+      switch (parent.id) {
+        case '1': {
+          const children = DPstores
+          callback(null, children)
+          break
+        }
+        case '2': {
+          const children = CEstores
+          callback(null, children)
+          break
+        }
+        case '3': {
+          const children = COstores
+          callback(null, children)
+          break
+        }
+        default:
+      }
+    },
     async register () {
       try {
         await AuthenticationService.register({
