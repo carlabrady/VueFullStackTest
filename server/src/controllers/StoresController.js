@@ -1,5 +1,4 @@
 const {ReportPortalUserStoreInformation} = require('../models')
-const {StoreInformation} = require('../models')
 const _ = require('lodash')
 
 module.exports = {
@@ -9,13 +8,10 @@ module.exports = {
       const stores = await ReportPortalUserStoreInformation.findAll({
           where: {
             ReportPortalUserID: userId
-          },
-          include: [{
-            model: StoreInformation,
-            attributes: ['StoreID']
-          }]
+          }
       })
-        .then(stores => stores.map(store => store.StoreInformation.StoreID));
+        .then(stores => stores.map(store => store.StoreID));
+        console.log(`stores: ${stores}`)
       res.send(stores)
     } catch (err) {
       res.status(400).send({
