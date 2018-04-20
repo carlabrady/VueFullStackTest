@@ -38,14 +38,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     Password: {
-      type: DataTypes.STRING(128),
+      type: DataTypes.STRING(256),
       allowNull: false
     },
     IsUserAdministrator: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false
-    },
-    IsStoreAdministrator: {
       type: DataTypes.BOOLEAN,
       allowNull: false
     }
@@ -60,10 +56,17 @@ module.exports = (sequelize, DataTypes) => {
   ReportPortalUser.prototype.comparePassword = function (Password) {
     return bcrypt.compareAsync(Password, this.Password)
   }
-    
+
   ReportPortalUser.associate = function (models) {
-    ReportPortalUser.hasOne(models.ReportPortalUserRelation, {as: 'ParentID', foreignKey: 'ParentReportPortalUserID'});
-    ReportPortalUser.hasOne(models.ReportPortalUserRelation, {as: 'ChildID', foreignKey: 'ChildReportPortalUserID'})
+    ReportPortalUser.hasMany(models.ReportPortalUserStore, {
+      foreignKey: 'ReportPortalUserID'
+    })
+    ReportPortalUser.hasMany(models.ReportPortalUserChild, {
+      foreignKey: 'ReportPortalUserID'
+    });
+    ReportPortalUser.hasMany(models.ReportPortalUserChild, {
+      foreignKey: 'ChildID'
+    })
   }
 
   return ReportPortalUser
