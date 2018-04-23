@@ -74,8 +74,8 @@
                   :max-height="200"
                   v-model="value"
                   />
-              </div>
-              <p>{{options}}</p>
+              </div><br/>
+              <user-permission-table />
             </v-container>
             <br>
             <div class="danger-alert" v-html="error" />
@@ -98,10 +98,12 @@ import AuthenticationService from '@/services/AuthenticationService'
 import {mapState} from 'vuex'
 import StoreService from '@/services/StoreService'
 import Treeselect from '@riophae/vue-treeselect'
+import UserPermissionTable from './UserPermissionTable'
 
 export default {
   components: {
-    Treeselect
+    Treeselect,
+    UserPermissionTable
   },
   data () {
     return {

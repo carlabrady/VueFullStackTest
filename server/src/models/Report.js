@@ -3,10 +3,10 @@ module.exports = (sequelize, DataTypes) => {
     ReportID: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
-      primaryKey: true,
+      primaryKey: true
     },
     ReportName: {
-      type: DataTypes.STRING(128),
+      type: DataTypes.STRING(256),
       unique: true,
       allowNull: false
     }
@@ -14,8 +14,11 @@ module.exports = (sequelize, DataTypes) => {
     timestamps: false,
     freezeTableName: true
   })
-    
-  Report.associate = function (models) {
+
+  Report.associate = (models) => {
+    Report.hasMany(models.ReportAccessConfiguration, {
+      foreignKey: 'ReportID'
+    })
   }
 
   return Report

@@ -1,6 +1,6 @@
 const {ReportPortalUser} = require('../models')
-const {ReportPortalUserRelation} = require('../models')
-const {ReportPortalUserStoreInformation} = require('../models')
+const {ReportPortalUserChild} = require('../models')
+const {ReportPortalUserStore} = require('../models')
 const jwt = require ('jsonwebtoken')
 const config = require('../config/config')
 
@@ -18,17 +18,17 @@ module.exports = {
       const stores = req.body.NewUserStores
       const user = await ReportPortalUser.create(req.body.NewUser)
         .then(user => {
-          return ReportPortalUserRelation.create(
+          return ReportPortalUserChild.create(
             {
-              ParentReportPortalUserID: req.body.CurrentUser,
-              ChildReportPortalUserID: user.ReportPortalUserID
+              ReportPortalUserID: req.body.CurrentUser,
+              ChildID: user.ReportPortalUserID
             }
           )
         })
         .then(user => {
           stores.forEach(store => {
-            return ReportPortalUserStoreInformation.create({
-              ReportPortalUserID: user.ChildReportPortalUserID,
+            return ReportPortalUserStore.create({
+              ReportPortalUserID: user.ChildID,
               StoreID: store
             })
           })
