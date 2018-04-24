@@ -2,7 +2,7 @@ const {ReportPortalUserStore} = require('../models')
 const _ = require('lodash')
 
 module.exports = {
-  async getStores (req, res) {
+  async getUserStores (req, res) {
     try {
       const userId = req.user.ReportPortalUserID
       const stores = await ReportPortalUserStore.findAll({
