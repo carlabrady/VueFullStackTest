@@ -4,7 +4,7 @@ const cors = require('cors')
 const morgan = require('morgan')
 require('dotenv').config()
 
-const {sequelize} = require('./models')
+const {sequelize1, sequelize2} = require('./models')
 const config = require('./config/config')
 
 const app = express()
@@ -16,8 +16,11 @@ require('./passport')
 
 require('./routes')(app)
 
-sequelize.sync()
+sequelize1.sync()
   .then(() => {
-    app.listen(process.env.PORT || config.port)
-    console.log(`Server started on port ${config.port}`)
+    sequelize2.sync()
+      .then(() => {
+        app.listen(process.env.PORT || config.port)
+        console.log(`Server started on port ${config.port}`)
+      })
   })

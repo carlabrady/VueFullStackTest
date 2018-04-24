@@ -1,5 +1,5 @@
 <template>
-  <card class="table elevation-1">
+  <div>
     <table class="table table-striped table-hover" style="border:1px;">
       <thead>
         <tr>
@@ -16,11 +16,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="i in items" :key="i.id">
-          <td>{{i.name}}</td>
+        <tr v-for="store in items" :key="store.id">
+          <td>{{store.name}}</td>
           <td>
             <label class="form-checkbox">
-                <input type="checkbox" :value="i.id" v-model="selected">
+                <input type="checkbox" :value="store.id" v-model="selected">
                 <i class="form-icon"></i>
               </label>
           </td>
@@ -89,7 +89,7 @@
         </tr>
       </template>
     </v-data-table> -->
-  </card>
+  </div>
 </template>
 
 <script>
@@ -107,7 +107,14 @@ export default {
       {
         id: '1',
         value: false,
-        name: '10011'
+        name: '10011',
+        reports: [{
+          id: '1',
+          name: 'Period Comparison Report'
+        }, {
+          id: '2',
+          name: 'Royalties Report'
+        }]
       },
       {
         id: '2',

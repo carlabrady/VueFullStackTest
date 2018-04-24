@@ -1,7 +1,8 @@
 module.exports = {
     port: process.env.PORT || 8081,
     db: {
-      database: process.env.RP_DB_NAME || 'VueFullStackTest',
+      database1: process.env.RP_DB_NAME || 'VueFullStackTest',
+      database2: process.env.POS_DB_NAME || 'VueFullStackTest',
       user: process.env.DB_USERNAME || 'VueFullStackTest',
       password: process.env.DB_PASSWORD || 'VueFullStackTest',
       options: {
