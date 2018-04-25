@@ -1,20 +1,20 @@
 <template>
   <div>
-    <table class="table table-striped table-hover" style="border:1px;">
-      <thead>
-        <tr>
-          <th v-for="header in headers"
+    <div class="table table-striped table-hover" style="border:1px;">
+      <div class="header">
+        <div class="row">
+          <div v-for="header in headers"
             :key="header.text">
             {{header.text}}
-          </th>
-          <th>
+          </div>
+          <div>
             <label class="form-checkbox">
               <input type="checkbox" v-model="selectAll" @click="select">
               <i class="form-icon"></i>
             </label>
-          </th>
-        </tr>
-      </thead>
+          </div>
+        </div>
+      </div>
       <tbody>
         <tr v-for="store in items" :key="store.id">
           <td>{{store.name}}</td>
@@ -26,7 +26,7 @@
           </td>
         </tr>
       </tbody>
-    </table>
+    </div>
 
   <!-- <div class="userPermissionTable">
     <v-data-table

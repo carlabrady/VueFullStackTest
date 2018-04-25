@@ -20,6 +20,7 @@
               type="password"
               v-model="password"
               autocomplete="new-password"
+              @keyup.enter="login"
             ></v-text-field>
           </form>
           <br>
