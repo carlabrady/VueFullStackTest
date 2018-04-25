@@ -1,31 +1,40 @@
 <template>
   <div>
-    <div class="table table-striped table-hover" style="border:1px;">
-      <div class="header">
-        <div class="row">
-          <div v-for="header in headers"
-            :key="header.text">
-            {{header.text}}
-          </div>
-          <div>
-            <label class="form-checkbox">
-              <input type="checkbox" v-model="selectAll" @click="select">
-              <i class="form-icon"></i>
-            </label>
-          </div>
+    <div class="table">
+      <v-layout row class="header">
+        <div v-for="header in headers"
+          :key="header.text">
+          {{header.text}}
         </div>
-      </div>
-      <tbody>
-        <tr v-for="store in items" :key="store.id">
-          <td>{{store.name}}</td>
-          <td>
+        <div>
+          <label class="form-checkbox">
+            <input type="checkbox" v-model="selectAll" @click="select">
+            <i class="form-icon"></i>
+          </label>
+        </div>
+      </v-layout>
+      <v-layout column class="body" v-for="store in items" :key="store.id">
+        <v-layout row>
+          <div>{{store.name}}</div>
+          <div>
             <label class="form-checkbox">
                 <input type="checkbox" :value="store.id" v-model="selected">
                 <i class="form-icon"></i>
               </label>
-          </td>
-        </tr>
-      </tbody>
+          </div>
+        </v-layout>
+        <v-layout v-if="store.value" column class="reportList" v-for="report in store.reports" :key="report.id">
+          <v-layout row>
+            <div>{{report.name}}</div>
+            <div>
+              <label class="form-checkbox">
+                  <input type="checkbox" :value="report.id" v-model="selected">
+                  <i class="form-icon"></i>
+                </label>
+            </div>
+          </v-layout>
+        </v-layout>
+      </v-layout>
     </div>
 
   <!-- <div class="userPermissionTable">
@@ -109,10 +118,10 @@ export default {
         value: false,
         name: '10011',
         reports: [{
-          id: '1',
+          id: 'r1',
           name: 'Period Comparison Report'
         }, {
-          id: '2',
+          id: 'r2',
           name: 'Royalties Report'
         }]
       },

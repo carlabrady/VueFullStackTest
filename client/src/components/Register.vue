@@ -1,7 +1,7 @@
 <template>
   <v-layout>
     <v-flex>
-      <div class="white elevation-2">
+      <v-card class="white elevation-2" style="border-radius:6px">
         <v-toolbar flat dense class="blue" dark>
           <v-toolbar-title>Add User</v-toolbar-title>
         </v-toolbar>
@@ -88,7 +88,7 @@
             </v-btn>
           </form>
         </div>
-      </div>
+      </v-card>
     </v-flex>
   </v-layout>
 </template>
