@@ -44,14 +44,9 @@
                 </v-flex>
                 <v-flex xs12 sm6>
                   <v-switch
-                    :label="`Can modify Users: ${userMod.toString()}`"
+                    :label="`Can Add/Modify Users`"
                     v-model="userMod"
-                  ></v-switch>
-                </v-flex>
-                <v-flex xs12 sm6>
-                  <v-switch
-                    :label="`Can modify Stores: ${storeMod.toString()}`"
-                    v-model="storeMod"
+                    color="green"
                   ></v-switch>
                 </v-flex>
               </v-layout>

@@ -47,7 +47,7 @@
       </v-toolbar-items>
     </v-toolbar>
     <v-footer color="blue" app>
-      <span class="white--text">&copy; 2018</span>
+      <span class="white--text">&copy; 2018 - BSTSoftwareCompany</span>
     </v-footer>
   </div>
 </template>
