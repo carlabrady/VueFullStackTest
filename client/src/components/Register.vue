@@ -67,13 +67,14 @@
                   :options="options"
                   :value-consists-of="valueConsistsOf"
                   :max-height="200"
+                  :valueFormat="valueFormat"
                   v-model="value"
                   />
               </div><br/>
-              <user-permission-table />
+              <user-permission-table :stores="value"></user-permission-table>
             </v-container>
             <br>
-            <div class="danger-alert" v-html="error" />
+            <div class="danger-alert" v-html="error"/>
             <br>
             <v-btn
               dark
@@ -118,6 +119,7 @@ export default {
       clearOnSelect: true,
       closeOnSelect: false,
       alwaysOpen: false,
+      valueFormat: 'object',
       value: [],
       valueConsistsOf: 'LEAF_PRIORITY',
       options: [{

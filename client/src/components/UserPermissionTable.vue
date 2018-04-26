@@ -1,6 +1,7 @@
 <template>
   <v-card>
     <div class="table">
+      <p>{{stores}}</p>
       <v-layout class="header">
         <div v-for="header in headers"
           :key="header.text" class="stores">
@@ -22,8 +23,8 @@
       <div class="seperation"></div>
 
       <v-layout column v-for="store in stores" :key="store.id">
-        <v-layout  class="bodyrow" row @click="!store.showReports">
-          <div class="stores">{{store.name}}</div>
+        <v-layout  class="bodyrow" row @click="store.showReports = !store.showReports">
+          <div class="stores">{{store.id}}</div>
           <div class="permissionCheckbox">
             <label>
                 <input type="checkbox" :value="store.id" v-model="viewSelected">
@@ -37,7 +38,7 @@
               </label>
           </div>
         </v-layout>
-        <div class="seperation" v-if="store.id !== '3'"></div>
+        <div class="seperation" v-if="store !== stores[stores.length - 1]"></div>
 
         <v-layout v-if="store.showReports" column class="reportList" v-for="report in store.reports" :key="report.id">
           <v-layout class="bodyrow" row>
@@ -64,6 +65,7 @@
 
 <script>
 export default {
+  props: ['stores'],
   data: () => ({
     headers: [
       {
@@ -72,30 +74,30 @@ export default {
         value: 'name'
       }
     ],
-    stores: [
-      {
-        id: '1',
-        showReports: false,
-        name: '10011',
-        reports: [{
-          id: 'r1',
-          name: 'Period Comparison Report'
-        }, {
-          id: 'r2',
-          name: 'Royalties Report'
-        }]
-      },
-      {
-        id: '2',
-        showReports: false,
-        name: '10012'
-      },
-      {
-        id: '3',
-        showReports: false,
-        name: '10013'
-      }
-    ],
+    // stores: [
+    //   {
+    //     id: '1',
+    //     showReports: false,
+    //     name: '10011',
+    //     reports: [{
+    //       id: 'r1',
+    //       name: 'Period Comparison Report'
+    //     }, {
+    //       id: 'r2',
+    //       name: 'Royalties Report'
+    //     }]
+    //   },
+    //   {
+    //     id: '2',
+    //     showReports: false,
+    //     name: '10012'
+    //   },
+    //   {
+    //     id: '3',
+    //     showReports: false,
+    //     name: '10013'
+    //   }
+    // ],
     selectAllView: false,
     selectAllEmail: false,
     viewSelected: [],
@@ -131,10 +133,11 @@ export default {
 
 }
 .seperation {
+  height: 1px;
   display: block;
   margin: 0 auto;
   width: 90%;
-  border-bottom: 1px solid rgba(0,0,0,.14)
+  background-color: rgba(0,0,0,.14)
 }
 .bodyrow {
   height: 25px;
