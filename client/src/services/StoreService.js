@@ -1,7 +1,7 @@
 import Api from '@/services/Api'
 
 export default {
-  get (params) {
+  getUserStoresAndReports (params) {
     return Api().get('stores', {
       params: params
     })

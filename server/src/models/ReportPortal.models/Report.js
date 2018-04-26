@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Report.associate = (models) => {
     Report.hasMany(models.ReportAccessConfiguration, {
+      as: 'Report',
       foreignKey: 'ReportID'
     })
   }

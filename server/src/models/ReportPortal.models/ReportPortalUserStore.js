@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'ReportPortalUserID'
     })
     ReportPortalUserStore.hasMany(models.ReportAccessConfiguration, {
+      as: 'ReportAccessConfiguration',
       foreignKey: 'ReportPortalUserStoreID'
     })
   }

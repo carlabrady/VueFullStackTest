@@ -16,6 +16,6 @@ module.exports = (app) => {
 
   app.get('/stores',
     isAuthenticated,
-    StoresController.getUserStores
+    StoresController.getUserStoresWithReports
   )
 }

@@ -40,9 +40,9 @@
         </v-layout>
         <div class="seperation" v-if="store !== stores[stores.length - 1]"></div>
 
-        <v-layout v-if="store.showReports" column class="reportList" v-for="report in store.reports" :key="report.id">
+        <v-layout v-if="store.showReports" column class="reportList" v-for="report in store.reports" :key="report.ReportID">
           <v-layout class="bodyrow" row>
-            <div class="stores">{{report.name}}</div>
+            <div class="stores">{{report.ReportName}}</div>
             <div class="permissionCheckbox">
               <label class="form-checkbox">
                   <input type="checkbox" :value="report.id" v-model="viewReportSelected">

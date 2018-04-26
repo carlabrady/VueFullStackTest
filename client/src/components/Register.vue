@@ -151,13 +151,17 @@ export default {
       const CEstores = []
       const COstores = []
       if (this.isUserLoggedIn) {
-        this.stores = (await StoreService.get()).data
+        this.stores = (await StoreService.getUserStoresAndReports()).data
         this.stores.forEach(store => {
           let newSelect = {
-            id: store,
-            label: store.toString()
+            id: store.StoreID,
+            label: store.StoreID.toString(),
+            reports: []
           }
-          switch (store.toString().substring(0, 1)) {
+          store.ReportAccessConfiguration.forEach(configuration => {
+            newSelect.reports.push(configuration.Report)
+          })
+          switch (store.StoreID.toString().substring(0, 1)) {
             case '1':
               DPstores.push(newSelect)
               break
@@ -168,7 +172,7 @@ export default {
               COstores.push(newSelect)
               break
             default:
-              console.log(store.toString().substring(0, 1))
+              console.log(store.StoreID.toString().substring(0, 1))
           }
         })
         console.log(DPstores, CEstores, COstores)

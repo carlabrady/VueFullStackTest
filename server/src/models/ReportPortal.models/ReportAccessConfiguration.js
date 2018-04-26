@@ -28,9 +28,11 @@ module.exports = (sequelize, DataTypes) => {
 
   ReportAccessConfiguration.associate = (models) => {
     ReportAccessConfiguration.belongsTo(models.Report, {
+      as: 'Report',
       foreignKey: 'ReportID'
     })
     ReportAccessConfiguration.belongsTo(models.ReportPortalUserStore, {
+      as: 'ReportAccessConfiguration',
       foreignKey: 'ReportPortalUserStoreID'
     })
     ReportAccessConfiguration.hasMany(models.ReportAccess, {
