@@ -159,20 +159,24 @@ export default {
             reports: []
           }
           store.ReportAccessConfiguration.forEach(configuration => {
-            newSelect.reports.push(configuration.Report)
+            if (configuration.HasViewAccess) {
+              newSelect.reports.push(configuration.Report)
+            }
           })
-          switch (store.StoreID.toString().substring(0, 1)) {
-            case '1':
-              DPstores.push(newSelect)
-              break
-            case '2':
-              CEstores.push(newSelect)
-              break
-            case '3':
-              COstores.push(newSelect)
-              break
-            default:
-              console.log(store.StoreID.toString().substring(0, 1))
+          if (newSelect.reports.length > 0) {
+            switch (store.StoreID.toString().substring(0, 1)) {
+              case '1':
+                DPstores.push(newSelect)
+                break
+              case '2':
+                CEstores.push(newSelect)
+                break
+              case '3':
+                COstores.push(newSelect)
+                break
+              default:
+                console.log(store.StoreID.toString().substring(0, 1))
+            }
           }
         })
         console.log(DPstores, CEstores, COstores)
@@ -204,8 +208,7 @@ export default {
             LastName: this.last,
             Email: this.email,
             Password: this.password,
-            IsUserAdministrator: this.userMod,
-            IsStoreAdministrator: this.storeMod
+            IsUserAdministrator: this.userMod
           },
           CurrentUser: this.$store.state.user.ReportPortalUserID,
           NewUserStores: this.selectedStores
