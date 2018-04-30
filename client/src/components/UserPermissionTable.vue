@@ -3,19 +3,26 @@
     <div>
       {{stores}}
       <v-layout class="header">
-        <div v-for="header in headers"
-          :key="header.text" class="stores">
-          {{header.text}}
+        <div class="stores">
+          {{header}}
         </div>
         <div class="permissionCheckbox">
           <label>
-            <input type="checkbox" v-indeterminate="viewAllIndeterminate" v-model="AllView" @click="selectAllView">
+            <input
+              type="checkbox"
+              v-indeterminate="viewAllIndeterminate"
+              v-model="AllView"
+              @click="selectAllView">
             <span>View Report</span>
           </label>
         </div>
         <div class="permissionCheckbox">
           <label>
-            <input type="checkbox" v-indeterminate="emailAllIndeterminate" v-model="AllEmail" @click="selectAllEmail">
+            <input
+              type="checkbox"
+              v-indeterminate="emailAllIndeterminate"
+              v-model="AllEmail"
+              @click="selectAllEmail">
             <span>Receive Email</span>
           </label>
         </div>
@@ -25,7 +32,7 @@
       <v-layout column v-for="store in stores" :key="store.id">
         <v-layout  class="bodyrow" row>
           <div class="stores">
-            <div @click="store.showReports = !store.showReports">
+            <div @click="showThisStoresReports(store)">
               <v-icon v-if="store.showReports">arrow_drop_up</v-icon>
               <v-icon v-else >arrow_drop_down</v-icon>
               {{store.id}}
@@ -33,12 +40,20 @@
           </div>
           <div class="permissionCheckbox">
             <label>
-                <input class="storeViewCheckbox" type="checkbox" :value="store.id" v-model="viewSelected">
+                <input
+                  class="storeViewCheckbox"
+                  type="checkbox"
+                  :value="store"
+                  v-model="viewSelected">
               </label>
           </div>
           <div class="permissionCheckbox">
             <label>
-                <input class="storeEmailCheckbox" type="checkbox" :value="store.id" v-model="emailSelected">
+                <input
+                  class="storeEmailCheckbox"
+                  type="checkbox"
+                  :value="store"
+                  v-model="emailSelected">
               </label>
           </div>
         </v-layout>
@@ -48,19 +63,30 @@
           <v-layout class="bodyrow" row>
             <div class="reports">{{report.ReportName}}</div>
             <div class="permissionCheckbox">
-              <label class="reportViewAccess">
-                  <input type="checkbox" :value="report.id" v-model="viewReportSelected" @click="changeStoreViewState">
+              <label>
+                  <input
+                    class="reportViewAccess"
+                    type="checkbox"
+                    :value="report.HasViewAccess"
+                    v-model="viewReportSelected"
+                    @click="changeStoreViewState(report)">
                 </label>
             </div>
             <div class="permissionCheckbox">
-              <label class="reportStoreAccess">
-                  <input type="checkbox" :value="report.id" v-model="emailReportSelected" @click="changeStoreEmailState">
+              <label>
+                  <input
+                    class="reportEmailAccess"
+                    type="checkbox"
+                    :value="report.CanReceiveEmail"
+                    v-model="emailReportSelected"
+                    @click="changeStoreEmailState">
                 </label>
             </div>
           </v-layout>
-          <div class="seperation" v-if="report !== store.reports[store.reports.length - 1]"></div>
+          <div class="seperation" v-if="report !== store.reports[store.reports.length - 1] || store !== stores[stores.length - 1]"></div>
         </v-layout>
       </v-layout>
+      {{viewSelected}}
     </div>
   </v-card>
 </template>
@@ -69,17 +95,11 @@
 export default {
   props: ['stores'],
   data: () => ({
-    headers: [
-      {
-        text: 'Stores',
-        align: 'left',
-        value: 'name'
-      }
-    ],
+    header: 'Stores',
     viewAllIndeterminate: false,
     emailAllIndeterminate: false,
-    viewReportSelected: false,
-    emailReportSelected: false,
+    viewReportSelected: [],
+    emailReportSelected: [],
     AllView: false,
     AllEmail: false,
     viewSelected: [],
@@ -87,12 +107,15 @@ export default {
   }),
 
   methods: {
+    showThisStoresReports (store) {
+      store.showReports = !store.showReports
+    },
     selectAllView () {
-      this.viewSelected = []
-
-      if (this.AllView) {
+      if (this.viewSelected.length > 0) {
+        this.viewSelected = []
+      } else {
         this.stores.forEach(store => {
-          this.viewSelected.push(store.id.toString())
+          this.viewSelected.push(store)
         })
       }
     },
@@ -109,8 +132,12 @@ export default {
         }
       }
     },
-    changeStoreViewState () {
+    changeStoreViewState (report) {
+      let checkedCount = document.querySelectorAll('input.reportViewAccess:checked').length
 
+      this.store.checked = checkedCount > 0
+      this.store.indeterminate = checkedCount > 0 && checkedCount < this.store.reports.length
+      report.HasViewAccess = !report.HasViewAccess
     },
     changeStoreEmailState () {
 

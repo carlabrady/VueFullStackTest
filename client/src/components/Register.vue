@@ -164,6 +164,10 @@ export default {
             }
           })
           if (newSelect.reports.length > 0) {
+            newSelect.reports.forEach(report => {
+              report.HasViewAccess = false
+              report.CanReceiveEmail = false
+            })
             switch (store.StoreID.toString().substring(0, 1)) {
               case '1':
                 DPstores.push(newSelect)
