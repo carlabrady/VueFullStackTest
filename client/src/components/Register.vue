@@ -157,6 +157,8 @@ export default {
             id: store.StoreID,
             label: store.StoreID.toString(),
             reports: [],
+            viewReportsSelected: [],
+            emailReportsSelected: [],
             showReports: false
           }
           store.ReportAccessConfiguration.forEach(configuration => {

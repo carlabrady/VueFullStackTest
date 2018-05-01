@@ -46,7 +46,7 @@
                   type="checkbox"
                   :value="store"
                   v-model="viewSelected"
-                  @click="selectReportsView">
+                  @click="selectReportsView(store)">
               </label>
           </div>
           <div class="permissionCheckbox">
@@ -56,13 +56,18 @@
                   type="checkbox"
                   :value="store"
                   v-model="emailSelected"
-                  @click="selectReportsEmail">
+                  @click="selectReportsEmail(store)">
               </label>
           </div>
         </v-layout>
         <div class="seperation" v-if="store !== stores[stores.length - 1] || store.showReports == true"></div>
 
-        <v-layout v-if="store.showReports" column class="reportList" v-for="report in store.reports" :key="report.ReportID">
+        <v-layout
+          column
+          v-if="store.showReports"
+          class="reportList"
+          v-for="report in store.reports"
+          :key="report.ReportID">
           <v-layout class="bodyrow" row>
             <div class="reports">{{report.ReportName}}</div>
             <div class="permissionCheckbox">
@@ -70,8 +75,8 @@
                   <input
                     class="reportViewAccess"
                     type="checkbox"
-                    :value="report"
-                    v-model="viewReportSelected"
+                    :value="report.ReportID"
+                    v-model="store.viewReportsSelected"
                     @click="changeStoreViewState(report, store)">
                 </label>
             </div>
@@ -80,9 +85,9 @@
                   <input
                     class="reportEmailAccess"
                     type="checkbox"
-                    :value="report"
-                    v-model="emailReportSelected"
-                    @click="changeStoreEmailState">
+                    :value="report.ReportID"
+                    v-model="store.emailReportsSelected"
+                    @click="changeStoreEmailState(report, store)">
                 </label>
             </div>
           </v-layout>
@@ -100,8 +105,10 @@ export default {
     header: 'Stores',
     allViewIndeterminate: false,
     allEmailIndeterminate: false,
-    viewReportSelected: [],
-    emailReportSelected: [],
+    storeViewIndeterminate: false,
+    storeEmailIndeterminate: false,
+    viewReportsSelected: [],
+    emailReportsSelected: [],
     allView: false,
     allEmail: false,
     viewSelected: [],
@@ -110,54 +117,71 @@ export default {
 
   methods: {
     showThisStoresReports (store) {
+      // toggle view of individual report permissions
       store.showReports = !store.showReports
     },
     allViewSelect () {
+      // on-click of checkbox to select view all access
       if (this.viewSelected.length > 0) {
         this.viewSelected = []
+        this.stores.forEach(store => {
+          store.viewReportsSelected = []
+        })
       } else {
         this.stores.forEach(store => {
           if (!this.viewSelected.includes(store)) {
+            store.reports.forEach(report => {
+              store.viewReportsSelected.push(report.ReportID)
+            })
             this.viewSelected.push(store)
           }
         })
       }
     },
     allEmailSelect () {
+      // on-click of checkbox to select email all access
       if (this.emailSelected.length > 0) {
         this.emailSelected = []
+        this.stores.forEach(store => {
+          store.emailReportsSelected = []
+        })
       } else {
         this.stores.forEach(store => {
           if (!this.emailSelected.includes(store)) {
+            store.reports.forEach(report => {
+              store.emailReportsSelected.push(report.ReportID)
+            })
             this.emailSelected.push(store)
           }
         })
       }
     },
-    selectReportsView () {
-      this.viewReportSelected = []
-      if (!this.viewReportSelected) {
-        for (let i in this.stores) {
-          this.viewReportSelected.push(this.stores[i].id)
-        }
+    selectReportsView (store) {
+      if (store.viewReportsSelected.length > 0) {
+        store.viewReportsSelected = []
+      } else {
+        store.reports.forEach(report => {
+          if (!store.viewReportsSelected.includes(report.ReportID)) {
+            store.viewReportsSelected.push(report.ReportID)
+          }
+        })
       }
     },
-    selectReportsEmail () {
-      this.viewEmailSelected = []
-      if (!this.viewEmailSelected) {
-        for (let i in this.stores) {
-          this.viewEmailSelected.push(this.stores[i].id)
-        }
+    selectReportsEmail (store) {
+      if (store.emailReportsSelected.length > 0) {
+        store.emailReportsSelected = []
+      } else {
+        store.reports.forEach(report => {
+          if (!store.emailReportsSelected.includes(report.ReportID)) {
+            store.emailReportsSelected.push(report.ReportID)
+          }
+        })
       }
     },
     changeStoreViewState (report, store) {
-      let checkedCount = document.querySelectorAll('input.reportViewAccess:checked').length
 
-      this.parent.checked = checkedCount > 0
-      this.store.indeterminate = checkedCount > 0 && checkedCount < this.store.reports.length
-      report.HasViewAccess = !report.HasViewAccess
     },
-    changeStoreEmailState () {
+    changeStoreEmailState (report, store) {
 
     }
   },
