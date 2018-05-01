@@ -156,7 +156,8 @@ export default {
           let newSelect = {
             id: store.StoreID,
             label: store.StoreID.toString(),
-            reports: []
+            reports: [],
+            showReports: false
           }
           store.ReportAccessConfiguration.forEach(configuration => {
             if (configuration.HasViewAccess) {
