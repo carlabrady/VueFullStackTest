@@ -1,7 +1,6 @@
 <template>
   <v-card class="pb-4">
     <div>
-      {{stores}}
       <v-layout class="header">
         <div class="stores">
           {{header}}
@@ -10,9 +9,10 @@
           <label>
             <input
               type="checkbox"
-              v-indeterminate="viewAllIndeterminate"
-              v-model="AllView"
-              @click="selectAllView">
+              v-indeterminate="allViewIndeterminate"
+              :value="allView"
+              v-model="allView"
+              @click="allViewSelect">
             <span>View Report</span>
           </label>
         </div>
@@ -20,9 +20,10 @@
           <label>
             <input
               type="checkbox"
-              v-indeterminate="emailAllIndeterminate"
-              v-model="AllEmail"
-              @click="selectAllEmail">
+              v-indeterminate="allEmailIndeterminate"
+              :value="allEmail"
+              v-model="allEmail"
+              @click="allEmailSelect">
             <span>Receive Email</span>
           </label>
         </div>
@@ -44,7 +45,8 @@
                   class="storeViewCheckbox"
                   type="checkbox"
                   :value="store"
-                  v-model="viewSelected">
+                  v-model="viewSelected"
+                  @click="selectReportsView">
               </label>
           </div>
           <div class="permissionCheckbox">
@@ -53,7 +55,8 @@
                   class="storeEmailCheckbox"
                   type="checkbox"
                   :value="store"
-                  v-model="emailSelected">
+                  v-model="emailSelected"
+                  @click="selectReportsEmail">
               </label>
           </div>
         </v-layout>
@@ -67,7 +70,7 @@
                   <input
                     class="reportViewAccess"
                     type="checkbox"
-                    :value="report.HasViewAccess"
+                    :value="report"
                     v-model="viewReportSelected"
                     @click="changeStoreViewState(report, store)">
                 </label>
@@ -77,7 +80,7 @@
                   <input
                     class="reportEmailAccess"
                     type="checkbox"
-                    :value="report.CanReceiveEmail"
+                    :value="report"
                     v-model="emailReportSelected"
                     @click="changeStoreEmailState">
                 </label>
@@ -86,7 +89,6 @@
           <div class="seperation" v-if="report !== store.reports[store.reports.length - 1] || store !== stores[stores.length - 1]"></div>
         </v-layout>
       </v-layout>
-      {{viewSelected}}
     </div>
   </v-card>
 </template>
@@ -96,12 +98,12 @@ export default {
   props: ['stores'],
   data: () => ({
     header: 'Stores',
-    viewAllIndeterminate: false,
-    emailAllIndeterminate: false,
+    allViewIndeterminate: false,
+    allEmailIndeterminate: false,
     viewReportSelected: [],
     emailReportSelected: [],
-    AllView: false,
-    AllEmail: false,
+    allView: false,
+    allEmail: false,
     viewSelected: [],
     emailSelected: []
   }),
@@ -110,8 +112,8 @@ export default {
     showThisStoresReports (store) {
       store.showReports = !store.showReports
     },
-    selectAllView () {
-      if (this.viewSelected.length === this.stores.length) {
+    allViewSelect () {
+      if (this.viewSelected.length > 0) {
         this.viewSelected = []
       } else {
         this.stores.forEach(store => {
@@ -121,23 +123,37 @@ export default {
         })
       }
     },
-    selectAllEmail () {
-      for (var i = 0; i < this.stores.length; i++) {
-        this.stores[i].storeEmailCheckbox.checked = this.checked
+    allEmailSelect () {
+      if (this.emailSelected.length > 0) {
+        this.emailSelected = []
+      } else {
+        this.stores.forEach(store => {
+          if (!this.emailSelected.includes(store)) {
+            this.emailSelected.push(store)
+          }
+        })
       }
     },
-    selectEmail () {
-      this.emailSelected = []
-      if (!this.selectAllEmail) {
+    selectReportsView () {
+      this.viewReportSelected = []
+      if (!this.viewReportSelected) {
         for (let i in this.stores) {
-          this.emailSelected.push(this.stores[i].id)
+          this.viewReportSelected.push(this.stores[i].id)
         }
       }
     },
-    changeStoreViewState (report) {
+    selectReportsEmail () {
+      this.viewEmailSelected = []
+      if (!this.viewEmailSelected) {
+        for (let i in this.stores) {
+          this.viewEmailSelected.push(this.stores[i].id)
+        }
+      }
+    },
+    changeStoreViewState (report, store) {
       let checkedCount = document.querySelectorAll('input.reportViewAccess:checked').length
 
-      this.store.checked = checkedCount > 0
+      this.parent.checked = checkedCount > 0
       this.store.indeterminate = checkedCount > 0 && checkedCount < this.store.reports.length
       report.HasViewAccess = !report.HasViewAccess
     },
@@ -148,6 +164,34 @@ export default {
   directives: {
     indeterminate: (el, binding) => {
       el.indeterminate = Boolean(binding.value)
+    }
+  },
+  watch: {
+    viewSelected (newVal, oldVal) {
+      // Handle changes in individual store view checkboxes
+      if (newVal.length === 0) {
+        this.allViewIndeterminate = false
+        this.allView = false
+      } else if (newVal.length === this.stores.length) {
+        this.allViewIndeterminate = false
+        this.allView = true
+      } else {
+        this.allViewIndeterminate = true
+        this.allView = false
+      }
+    },
+    emailSelected (newVal, oldVal) {
+      // Handle changes in individual store email checkboxes
+      if (newVal.length === 0) {
+        this.allEmailIndeterminate = false
+        this.allEmail = false
+      } else if (newVal.length === this.stores.length) {
+        this.allEmailIndeterminate = false
+        this.allEmail = true
+      } else {
+        this.allEmailIndeterminate = true
+        this.allEmail = false
+      }
     }
   }
 }
