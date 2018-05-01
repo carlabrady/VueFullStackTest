@@ -69,7 +69,7 @@
                     type="checkbox"
                     :value="report.HasViewAccess"
                     v-model="viewReportSelected"
-                    @click="changeStoreViewState(report)">
+                    @click="changeStoreViewState(report, store)">
                 </label>
             </div>
             <div class="permissionCheckbox">
@@ -111,11 +111,13 @@ export default {
       store.showReports = !store.showReports
     },
     selectAllView () {
-      if (this.viewSelected.length > 0) {
+      if (this.viewSelected.length === this.stores.length) {
         this.viewSelected = []
       } else {
         this.stores.forEach(store => {
-          this.viewSelected.push(store)
+          if (!this.viewSelected.includes(store)) {
+            this.viewSelected.push(store)
+          }
         })
       }
     },
