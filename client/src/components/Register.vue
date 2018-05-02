@@ -209,6 +209,7 @@ export default {
     async register () {
       let NewUserStores = []
       this.value.forEach(store => {
+        let emailOnlyReports = []
         let Store = {
           StoreID: store.id,
           reports: []
@@ -216,23 +217,28 @@ export default {
         store.viewReportsSelected.forEach(viewSelect => {
           let report = {
             ReportID: viewSelect,
-            HasViewAccess: true
+            HasViewAccess: true,
+            CanReceiveEmail: false
           }
           Store.reports.push(report)
         })
         store.emailReportsSelected.forEach(emailSelect => {
           Store.reports.forEach(report => {
-            if (emailSelect !== report.ReportID) {
-              Store.reports.push({
+            console.log('reportid', report.ReportID)
+            console.log('emailSelect', emailSelect)
+            if (report.ReportID !== emailSelect) {
+              let emailOnlyReport = {
                 ReportID: emailSelect,
                 HasViewAccess: false,
                 CanReceiveEmail: true
-              })
+              }
+              emailOnlyReports.push(emailOnlyReport)
             } else {
               report.CanReceiveEmail = true
             }
           })
         })
+        Store.reports.concat(emailOnlyReports)
         NewUserStores.push(Store)
         console.log(NewUserStores)
       })
