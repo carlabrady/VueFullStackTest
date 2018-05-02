@@ -76,6 +76,7 @@
             <br>
             <div class="danger-alert" v-html="error"/>
             <br>
+            {{this.value}}
             <v-btn
               dark
               class="green"
@@ -159,6 +160,8 @@ export default {
             reports: [],
             viewReportsSelected: [],
             emailReportsSelected: [],
+            storeViewIndeterminate: false,
+            storeEmailIndeterminate: false,
             showReports: false
           }
           store.ReportAccessConfiguration.forEach(configuration => {
@@ -218,7 +221,7 @@ export default {
             IsUserAdministrator: this.userMod
           },
           CurrentUser: this.$store.state.user.ReportPortalUserID,
-          NewUserStores: this.selectedStores
+          NewUserStores: this.value
         })
         this.$router.push({
           name: 'root'

@@ -34,8 +34,10 @@
         <v-layout  class="bodyrow" row>
           <div class="stores">
             <div @click="showThisStoresReports(store)">
-              <v-icon v-if="store.showReports">arrow_drop_up</v-icon>
-              <v-icon v-else >arrow_drop_down</v-icon>
+              <v-btn small icon>
+                <v-icon v-if="store.showReports">arrow_drop_up</v-icon>
+                <v-icon v-else >arrow_drop_down</v-icon>
+              </v-btn>
               {{store.id}}
             </div>
           </div>
@@ -44,6 +46,7 @@
                 <input
                   class="storeViewCheckbox"
                   type="checkbox"
+                  v-indeterminate="store.storeViewIndeterminate"
                   :value="store"
                   v-model="viewSelected"
                   @click="selectReportsView(store)">
@@ -54,6 +57,7 @@
                 <input
                   class="storeEmailCheckbox"
                   type="checkbox"
+                  v-indeterminate="store.storeEmailIndeterminate"
                   :value="store"
                   v-model="emailSelected"
                   @click="selectReportsEmail(store)">
@@ -77,7 +81,7 @@
                     type="checkbox"
                     :value="report.ReportID"
                     v-model="store.viewReportsSelected"
-                    @click="changeStoreViewState(report, store)">
+                    @change="changeStoreViewState(store)">
                 </label>
             </div>
             <div class="permissionCheckbox">
@@ -87,7 +91,7 @@
                     type="checkbox"
                     :value="report.ReportID"
                     v-model="store.emailReportsSelected"
-                    @click="changeStoreEmailState(report, store)">
+                    @change="changeStoreEmailState(store)">
                 </label>
             </div>
           </v-layout>
@@ -105,10 +109,6 @@ export default {
     header: 'Stores',
     allViewIndeterminate: false,
     allEmailIndeterminate: false,
-    storeViewIndeterminate: false,
-    storeEmailIndeterminate: false,
-    viewReportsSelected: [],
-    emailReportsSelected: [],
     allView: false,
     allEmail: false,
     viewSelected: [],
@@ -125,12 +125,14 @@ export default {
       if (this.viewSelected.length > 0) {
         this.viewSelected = []
         this.stores.forEach(store => {
+          store.storeViewIndeterminate = false
           store.viewReportsSelected = []
         })
       } else {
         this.stores.forEach(store => {
           if (!this.viewSelected.includes(store)) {
             store.reports.forEach(report => {
+              store.storeViewIndeterminate = false
               store.viewReportsSelected.push(report.ReportID)
             })
             this.viewSelected.push(store)
@@ -143,12 +145,14 @@ export default {
       if (this.emailSelected.length > 0) {
         this.emailSelected = []
         this.stores.forEach(store => {
+          store.storeEmailIndeterminate = false
           store.emailReportsSelected = []
         })
       } else {
         this.stores.forEach(store => {
           if (!this.emailSelected.includes(store)) {
             store.reports.forEach(report => {
+              store.storeEmailIndeterminate = false
               store.emailReportsSelected.push(report.ReportID)
             })
             this.emailSelected.push(store)
@@ -178,11 +182,45 @@ export default {
         })
       }
     },
-    changeStoreViewState (report, store) {
+    changeStoreViewState (store) {
+      let index = this.viewSelected.indexOf(store)
 
+      if (store.viewReportsSelected.length === 0) {
+        store.storeViewIndeterminate = false
+        if (this.viewSelected.includes(store)) {
+          this.viewSelected.splice(index, 1)
+        }
+      } else if (store.viewReportsSelected.length === store.reports.length) {
+        store.storeViewIndeterminate = false
+        if (!this.viewSelected.includes(store)) {
+          this.viewSelected.push(store)
+        }
+      } else {
+        store.storeViewIndeterminate = true
+        if (this.viewSelected.includes(store)) {
+          this.viewSelected.splice(index, 1)
+        }
+      }
     },
-    changeStoreEmailState (report, store) {
+    changeStoreEmailState (store) {
+      let index = this.emailSelected.indexOf(store)
 
+      if (store.emailReportsSelected.length === 0) {
+        store.storeEmailIndeterminate = false
+        if (this.emailSelected.includes(store)) {
+          this.emailSelected.splice(index, 1)
+        }
+      } else if (store.emailReportsSelected.length === store.reports.length) {
+        store.storeEmailIndeterminate = false
+        if (!this.emailSelected.includes(store)) {
+          this.emailSelected.push(store)
+        }
+      } else {
+        store.storeEmailIndeterminate = true
+        if (this.emailSelected.includes(store)) {
+          this.emailSelected.splice(index, 1)
+        }
+      }
     }
   },
   directives: {
