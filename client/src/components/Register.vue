@@ -170,10 +170,6 @@ export default {
             }
           })
           if (newSelect.reports.length > 0) {
-            newSelect.reports.forEach(report => {
-              report.HasViewAccess = false
-              report.CanReceiveEmail = false
-            })
             switch (store.StoreID.toString().substring(0, 1)) {
               case '1':
                 DPstores.push(newSelect)
@@ -211,6 +207,35 @@ export default {
       }
     },
     async register () {
+      let NewUserStores = []
+      this.value.forEach(store => {
+        let Store = {
+          StoreID: store.id,
+          reports: []
+        }
+        store.viewReportsSelected.forEach(viewSelect => {
+          let report = {
+            ReportID: viewSelect,
+            HasViewAccess: true
+          }
+          Store.reports.push(report)
+        })
+        store.emailReportsSelected.forEach(emailSelect => {
+          Store.reports.forEach(report => {
+            if (emailSelect !== report.ReportID) {
+              Store.reports.push({
+                ReportID: emailSelect,
+                HasViewAccess: false,
+                CanReceiveEmail: true
+              })
+            } else {
+              report.CanReceiveEmail = true
+            }
+          })
+        })
+        NewUserStores.push(Store)
+        console.log(NewUserStores)
+      })
       try {
         await AuthenticationService.register({
           NewUser: {
@@ -218,10 +243,10 @@ export default {
             LastName: this.last,
             Email: this.email,
             Password: this.password,
-            IsUserAdministrator: this.userMod
+            IsUserAdministrator: this.userMod,
+            NewUserStores: NewUserStores
           },
-          CurrentUser: this.$store.state.user.ReportPortalUserID,
-          NewUserStores: this.value
+          CurrentUser: this.$store.state.user.ReportPortalUserID
         })
         this.$router.push({
           name: 'root'
