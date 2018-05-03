@@ -1,6 +1,6 @@
 const {ReportPortalUser} = require('../models')
 const {ReportPortalUserChild} = require('../models')
-const {ReportPortalUserStore} = require('../models')
+const {ReportPortalUserStore, ReportAccessConfiguration} = require('../models')
 const jwt = require ('jsonwebtoken')
 const config = require('../config/config')
 
@@ -13,6 +13,7 @@ function jwtSignUser (user) {
 
 module.exports = {
   async register (req, res) {
+    console.log(`in register with req.body.NewUserStores ${req.body.NewUserStores}`)
     try {
       const currentUser = req.body.CurrentUser
       const stores = req.body.NewUserStores
@@ -29,7 +30,17 @@ module.exports = {
           stores.forEach(store => {
             return ReportPortalUserStore.create({
               ReportPortalUserID: user.ChildID,
-              StoreID: store
+              StoreID: store.StoreID
+            })
+            .then(userStore => {
+              store.reports.forEach(report => {
+                return ReportAccessConfiguration.create({
+                  ReportID: report.ReportID,
+                  ReportPortalUserStoreID: userStore.ReportPortalUserStoreID,
+                  CanReceiveEmail: report.CanReceiveEmail,
+                  HasViewAccess: report.HasViewAccess
+                })
+              })
             })
           })
         })
