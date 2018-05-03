@@ -1,5 +1,5 @@
 <template>
-  <v-layout>
+  <v-layout class="registerUser">
     <v-flex>
       <v-card class="white elevation-2" style="border-radius:6px">
         <v-toolbar flat dense class="blue" dark>
@@ -208,12 +208,13 @@ export default {
     },
     async register () {
       let NewUserStores = []
-      this.value.forEach(store => {
+      await this.value.forEach(store => {
         let emailOnlyReports = []
         let Store = {
           StoreID: store.id,
           reports: []
         }
+
         store.viewReportsSelected.forEach(viewSelect => {
           let report = {
             ReportID: viewSelect,
@@ -222,25 +223,29 @@ export default {
           }
           Store.reports.push(report)
         })
+
         store.emailReportsSelected.forEach(emailSelect => {
-          Store.reports.forEach(report => {
-            console.log('reportid', report.ReportID)
-            console.log('emailSelect', emailSelect)
-            if (report.ReportID !== emailSelect) {
-              let emailOnlyReport = {
-                ReportID: emailSelect,
-                HasViewAccess: false,
-                CanReceiveEmail: true
-              }
-              emailOnlyReports.push(emailOnlyReport)
-            } else {
-              report.CanReceiveEmail = true
+          if (!store.viewReportsSelected.includes(emailSelect)) {
+            let emailOnlyReport = {
+              ReportID: emailSelect,
+              HasViewAccess: false,
+              CanReceiveEmail: true
             }
-          })
+            emailOnlyReports.push(emailOnlyReport)
+            console.log(`email reports after email loop ${emailOnlyReports}`)
+          } else {
+            for (let i = 0; i < Store.reports.length; i++) {
+              const report = Store.reports[i]
+              if (report.ReportID === emailSelect) {
+                report.CanReceiveEmail = true
+                break
+              }
+            }
+          }
         })
-        Store.reports.concat(emailOnlyReports)
+
+        Store.reports = Store.reports.concat(emailOnlyReports)
         NewUserStores.push(Store)
-        console.log(NewUserStores)
       })
       try {
         await AuthenticationService.register({
@@ -249,10 +254,10 @@ export default {
             LastName: this.last,
             Email: this.email,
             Password: this.password,
-            IsUserAdministrator: this.userMod,
-            NewUserStores: NewUserStores
+            IsUserAdministrator: this.userMod
           },
-          CurrentUser: this.$store.state.user.ReportPortalUserID
+          CurrentUser: this.$store.state.user.ReportPortalUserID,
+          NewUserStores: NewUserStores
         })
         this.$router.push({
           name: 'root'
@@ -266,11 +271,17 @@ export default {
 </script>
 
 <style scoped>
+.registerUser {
+  padding: 5em;
+}
+
+@media screen and (max-width: 600px) {
+  .registerUser {
+    padding: 0;
+  }
+}
 
 .toolbar__title {
   color: white;
-}
-#app > div > main > div > div {
-  padding: 5em;
 }
 </style>
