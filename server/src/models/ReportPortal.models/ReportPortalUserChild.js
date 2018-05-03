@@ -20,9 +20,11 @@ module.exports = (sequelize, DataTypes) => {
 
   ReportPortalUserChild.associate = function (models) {
     ReportPortalUserChild.belongsTo(models.ReportPortalUser, {
+      as: 'ReportPortalUserChild',
       foreignKey: 'ReportPortalUserID',
     })
     ReportPortalUserChild.belongsTo(models.ReportPortalUser, {
+      as: 'UserChild',
       foreignKey: 'ChildID',
     })
   }

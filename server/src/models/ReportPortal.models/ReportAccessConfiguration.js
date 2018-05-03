@@ -36,6 +36,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'ReportPortalUserStoreID'
     })
     ReportAccessConfiguration.hasMany(models.ReportAccess, {
+      as: 'ReportAccess',
       foreignKey: 'ReportAccessConfigurationID'
     })
   }

@@ -59,12 +59,15 @@ module.exports = (sequelize, DataTypes) => {
 
   ReportPortalUser.associate = function (models) {
     ReportPortalUser.hasMany(models.ReportPortalUserStore, {
+      as: 'UserStore',
       foreignKey: 'ReportPortalUserID'
     })
     ReportPortalUser.hasMany(models.ReportPortalUserChild, {
+      as: 'ReportPortalUserChild',
       foreignKey: 'ReportPortalUserID'
     });
     ReportPortalUser.hasMany(models.ReportPortalUserChild, {
+      as: 'UserChild',
       foreignKey: 'ChildID'
     })
   }

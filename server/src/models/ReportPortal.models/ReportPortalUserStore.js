@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
   })
   ReportPortalUserStore.associate = (models) => {
     ReportPortalUserStore.belongsTo(models.ReportPortalUser, {
+      as: 'UserStore',
       foreignKey: 'ReportPortalUserID'
     })
     ReportPortalUserStore.hasMany(models.ReportAccessConfiguration, {

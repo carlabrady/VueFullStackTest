@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
   })
   ReportAccess.associate = (models) => {
     ReportAccess.belongsTo(models.ReportAccessConfiguration, {
+      as: 'ReportAccess',
       foreignKey: 'ReportAccessConfigurationID'
     })
   }
