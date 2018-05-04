@@ -8,9 +8,37 @@
           <v-btn
               dark
               class="pink"
-              @click="deleteUser">
+              @click.native.stop="dialog = true">
               Delete User
             </v-btn>
+            <v-dialog v-model="dialog" max-width="290">
+              <v-card>
+                <v-card-title class="headline">Are you sure you would like to delete this user?</v-card-title>
+                <v-card-text>Please enter the user's email for verifiaction:
+                  <v-container grid-list-md>
+                    <v-layout wrap>
+                      <v-flex xs12>
+                        <v-text-field
+                          label="Email"
+                          type="email"
+                          v-model="email"
+                          required
+                        ></v-text-field>
+                      </v-flex>
+                    </v-layout>
+                  </v-container>
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn
+                    dark
+                    class="pink"
+                    @click="deleteUser">
+                    Delete User
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
         </v-toolbar>
 
         <div class="pl-4 pr-4 pt-2 pb-2">
@@ -135,6 +163,7 @@ export default {
       valueFormat: 'object',
       value: [],
       valueConsistsOf: 'LEAF_PRIORITY',
+      dialog: false,
       options: [{
         id: '1',
         label: 'Device Pitstop',
