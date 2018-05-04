@@ -5,6 +5,7 @@ import Register from '@/components/Register'
 import Login from '@/components/Login'
 import Sales from '@/components/Sales'
 import Buys from '@/components/Buys'
+import UpdateUser from '@/components/UpdateUser'
 
 Vue.use(Router)
 
@@ -24,6 +25,11 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: Login
+    },
+    {
+      path: '/updateUser',
+      name: 'UpdateUser',
+      component: UpdateUser
     },
     {
       path: '/sales',
