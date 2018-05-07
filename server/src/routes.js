@@ -13,6 +13,10 @@ module.exports = (app) => {
   app.post('/login',
     AuthenticationController.login
   )
+  app.get('/getUsers',
+    isAuthenticated,
+    AuthenticationController.getUsers
+  )
 
   app.get('/stores',
     isAuthenticated,

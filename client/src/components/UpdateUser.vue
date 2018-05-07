@@ -1,6 +1,22 @@
 <template>
   <v-layout class="registerUser">
     <v-flex>
+      <v-layout row wrap>
+        <v-flex xs12 sm6 offset-sm3>
+          <v-card style="border-radius:6px" class="mb-2">
+            <v-container fluid>
+              <v-select
+                :items="userNames"
+                item-text="fullName"
+                item-value="id"
+                v-model="selectedUser"
+                label="Select User to Modify"
+                autocomplete
+              ></v-select>
+            </v-container>
+          </v-card>
+        </v-flex>
+      </v-layout>
       <v-card class="white elevation-2" style="border-radius:6px">
         <v-toolbar flat dense class="blue" dark>
           <v-toolbar-title>Edit User</v-toolbar-title>
@@ -8,10 +24,10 @@
           <v-btn
               dark
               class="pink"
-              @click.native.stop="dialog = true">
+              @click.native.stop="deleteDialog = true">
               Delete User
             </v-btn>
-            <v-dialog v-model="dialog" max-width="290">
+            <v-dialog v-model="deleteDialog" max-width="290">
               <v-card>
                 <v-card-title class="headline">Are you sure you would like to delete this user?</v-card-title>
                 <v-card-text>Please enter the user's email for verifiaction:
@@ -162,8 +178,11 @@ export default {
       alwaysOpen: false,
       valueFormat: 'object',
       value: [],
+      users: [],
+      userNames: [],
+      selectedUser: null,
       valueConsistsOf: 'LEAF_PRIORITY',
-      dialog: false,
+      deleteDialog: false,
       options: [{
         id: '1',
         label: 'Device Pitstop',
@@ -307,12 +326,23 @@ export default {
         this.error = error.response.data.error
       }
     },
-    async mounted () {
-      try {
-        // get user info from db
-      } catch (err) {
-        console.log(err)
-      }
+    async deleteUser () {
+      // delete user info
+    }
+  },
+  async mounted () {
+    try {
+      this.users = (await AuthenticationService.getUsers()).data
+      this.users.forEach(user => {
+        let childUsers = {
+          fullName: `${user.UserChild.FirstName} ${user.UserChild.LastName}`,
+          id: user.ChildId
+        }
+        this.userNames.push(childUsers)
+      })
+      console.log(`returned users ${this.users[2].UserChild.FirstName}`)
+    } catch (err) {
+      console.log(err)
     }
   }
 }

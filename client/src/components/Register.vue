@@ -76,7 +76,6 @@
             <br>
             <div class="danger-alert" v-html="error"/>
             <br>
-            {{this.value}}
             <v-btn
               dark
               class="green"

@@ -1,6 +1,4 @@
-const {ReportPortalUser} = require('../models')
-const {ReportPortalUserChild} = require('../models')
-const {ReportPortalUserStore, ReportAccessConfiguration} = require('../models')
+const {ReportPortalUser, ReportPortalUserChild, ReportPortalUserStore, ReportAccessConfiguration} = require('../models')
 const jwt = require ('jsonwebtoken')
 const config = require('../config/config')
 
@@ -82,6 +80,38 @@ module.exports = {
     } catch (err) {
       res.status(500).send({
         error: 'An error has occured trying to login.'
+      })
+    }
+  },
+
+  async getUsers (req, res) {
+    try {
+      const userId = req.user.ReportPortalUserID
+      const users = await ReportPortalUserChild.findAll({
+        where: {
+          ReportPortalUserID: userId
+        },
+        include: [{
+          model: ReportPortalUser,
+          as: 'UserChild',
+          include: [{
+            model: ReportPortalUserStore,
+            as: 'UserStore',
+            include: [{
+              model: ReportAccessConfiguration,
+              as: 'ReportAccessConfiguration'
+            }]
+          }]
+        }]
+      })
+        .then(users => {
+          return JSON.stringify(users)
+        });
+        console.log(`users: ${users}`)
+      res.send(users)
+    } catch (err) {
+      res.status(400).send({
+        error: 'Failed to load users.'
       })
     }
   }

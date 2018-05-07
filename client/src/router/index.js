@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloNTY from '@/components/HelloNTY'
+import Dashboard from '@/components/Dashboard'
 import Register from '@/components/Register'
 import Login from '@/components/Login'
 import Sales from '@/components/Sales'
@@ -14,7 +14,7 @@ export default new Router({
     {
       path: '/',
       name: 'root',
-      component: HelloNTY
+      component: Dashboard
     },
     {
       path: '/register',
