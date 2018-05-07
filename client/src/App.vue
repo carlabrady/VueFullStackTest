@@ -13,10 +13,16 @@
 
 <script>
 import PageHeader from '@/components/Header.vue'
+
 export default {
   name: 'App',
   components: {
     PageHeader
+  },
+  updated () {
+    if (!this.$store.state.isUserLoggedIn && this.$route.path !== '/login') {
+      this.$router.push('/login')
+    }
   }
 }
 </script>
