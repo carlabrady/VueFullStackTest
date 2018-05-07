@@ -108,7 +108,6 @@ export default {
       email: '',
       password: '',
       userMod: false,
-      storeMod: false,
       error: null,
       multiple: true,
       clearable: true,

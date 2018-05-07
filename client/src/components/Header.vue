@@ -4,8 +4,7 @@
       v-model="drawer"
       clipped
       app
-      dark
-    >
+      dark>
       <v-list dense>
         <v-list-tile v-for="item in items" :value="item.title" :key="item.title"
                       :to="item.path == '#' ? '' : item.path"
@@ -37,14 +36,12 @@
           Login
         </v-btn>
 
-        <div v-if="$store.state.isUserLoggedIn && $store.state.user.IsUserAdministrator">
-          <v-btn flat dark to="updateUser">
-            Edit User
-          </v-btn>
-          <v-btn flat dark to="register">
-            Add User
-          </v-btn>
-        </div>
+        <v-btn v-if="$store.state.isUserLoggedIn && $store.state.user.IsUserAdministrator" flat dark to="updateUser">
+          Edit User
+        </v-btn>
+        <v-btn v-if="$store.state.isUserLoggedIn && $store.state.user.IsUserAdministrator" flat dark to="register">
+          Add User
+        </v-btn>
 
         <v-btn v-if="$store.state.isUserLoggedIn" flat dark @click="logout">
           Log Out

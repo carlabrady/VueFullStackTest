@@ -7,9 +7,10 @@
             <v-container fluid>
               <v-select
                 :items="userNames"
+                v-model="selectedUser"
                 item-text="fullName"
                 item-value="id"
-                v-model="selectedUser"
+                return-object
                 label="Select User to Modify"
                 autocomplete
               ></v-select>
@@ -165,7 +166,6 @@ export default {
       email: '',
       password: '',
       userMod: false,
-      storeMod: false,
       error: null,
       multiple: true,
       clearable: true,
@@ -180,7 +180,10 @@ export default {
       value: [],
       users: [],
       userNames: [],
-      selectedUser: null,
+      selectedUser: {
+        fullName: '',
+        id: null
+      },
       valueConsistsOf: 'LEAF_PRIORITY',
       deleteDialog: false,
       options: [{
@@ -205,6 +208,35 @@ export default {
       'isUserLoggedIn',
       'user'
     ])
+  },
+  watch: {
+    selectedUser: function (newUser, oldUser) {
+      this.users.forEach(user => {
+        if (user.ChildID === newUser.id) {
+          this.first = user.UserChild.FirstName
+          this.last = user.UserChild.LastName
+          this.email = user.UserChild.Email
+          this.password = user.UserChild.Password
+          this.userMod = user.UserChild.IsUserAdministrator
+          this.value = []
+          this.options = [{
+            id: '1',
+            label: 'Device Pitstop',
+            children: null
+          },
+          {
+            id: '2',
+            label: 'Clothing Exchange',
+            children: null
+          },
+          {
+            id: '3',
+            label: 'Children\'s Orchard',
+            children: null
+          }]
+        }
+      })
+    }
   },
   methods: {
     async loadChildrenOptions (parent, callback/*, id */) {
@@ -336,11 +368,10 @@ export default {
       this.users.forEach(user => {
         let childUsers = {
           fullName: `${user.UserChild.FirstName} ${user.UserChild.LastName}`,
-          id: user.ChildId
+          id: user.ChildID
         }
         this.userNames.push(childUsers)
       })
-      console.log(`returned users ${this.users[2].UserChild.FirstName}`)
     } catch (err) {
       console.log(err)
     }
