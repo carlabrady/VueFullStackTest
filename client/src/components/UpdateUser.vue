@@ -1,11 +1,15 @@
 <template>
   <v-layout class="registerUser">
     <v-flex>
-      <v-layout row wrap>
-        <v-flex xs12 sm6 offset-sm3>
-          <v-card style="border-radius:6px" class="mb-2">
-            <v-container fluid>
+      
+      <v-card class="white elevation-2" style="border-radius:6px">
+        <v-toolbar flat dense class="blue" dark extended>
+          <v-toolbar-title>Edit User</v-toolbar-title>
+        <v-flex xs12 sm6 offset-sm2>
+          <v-card light style="border-radius:6px" class="mt-5">
+            <v-container fluid class="pt-0 pb-0">
               <v-select
+                light
                 :items="userNames"
                 v-model="selectedUser"
                 item-text="fullName"
@@ -17,10 +21,6 @@
             </v-container>
           </v-card>
         </v-flex>
-      </v-layout>
-      <v-card class="white elevation-2" style="border-radius:6px">
-        <v-toolbar flat dense class="blue" dark>
-          <v-toolbar-title>Edit User</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-btn
               dark
@@ -31,7 +31,7 @@
             <v-dialog v-model="deleteDialog" max-width="290">
               <v-card>
                 <v-card-title class="headline">Are you sure you would like to delete this user?</v-card-title>
-                <v-card-text>Please enter the user's email for verifiaction:
+                <v-card-text>Please verify the user's email:
                   <v-container grid-list-md>
                     <v-layout wrap>
                       <v-flex xs12>
@@ -46,6 +46,12 @@
                   </v-container>
                 </v-card-text>
                 <v-card-actions>
+                  <v-btn
+                    dark
+                    class="blue"
+                    @click="deleteDialog = false">
+                    Cancel
+                  </v-btn>
                   <v-spacer></v-spacer>
                   <v-btn
                     dark
