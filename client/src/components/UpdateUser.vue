@@ -1,30 +1,29 @@
 <template>
   <v-layout class="registerUser">
     <v-flex>
-      
       <v-card class="white elevation-2" style="border-radius:6px">
         <v-toolbar flat dense class="blue" dark extended>
-          <v-toolbar-title>Edit User</v-toolbar-title>
-        <v-flex xs12 sm6 offset-sm2>
-          <v-card light style="border-radius:6px" class="mt-5">
-            <v-container fluid class="pt-0 pb-0">
-              <v-select
-                light
-                :items="userNames"
-                v-model="selectedUser"
-                item-text="fullName"
-                item-value="id"
-                return-object
-                label="Select User to Modify"
-                autocomplete
-              ></v-select>
-            </v-container>
-          </v-card>
-        </v-flex>
+          <v-toolbar-title class="mt-5">Edit User</v-toolbar-title>
+          <v-flex xs12 sm6 offset-sm2>
+            <v-card light style="border-radius:6px" class="mt-5">
+              <v-container fluid class="pt-0 pb-0">
+                <v-select
+                  light
+                  :items="userNames"
+                  v-model="selectedUser"
+                  item-text="fullName"
+                  item-value="id"
+                  return-object
+                  label="Select User to Modify"
+                  autocomplete
+                ></v-select>
+              </v-container>
+            </v-card>
+          </v-flex>
           <v-spacer></v-spacer>
           <v-btn
               dark
-              class="pink"
+              class="pink mt-5"
               @click.native.stop="deleteDialog = true">
               Delete User
             </v-btn>
@@ -90,14 +89,6 @@
                     label="Email"
                     type="email"
                     v-model="email"
-                  ></v-text-field>
-                </v-flex>
-                <v-flex xs12>
-                  <v-text-field
-                    label="Password"
-                    type="password"
-                    v-model="password"
-                    autocomplete="new-password"
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs12 sm6>
@@ -222,7 +213,6 @@ export default {
           this.first = user.UserChild.FirstName
           this.last = user.UserChild.LastName
           this.email = user.UserChild.Email
-          this.password = user.UserChild.Password
           this.userMod = user.UserChild.IsUserAdministrator
           this.value = []
           this.options = [{
