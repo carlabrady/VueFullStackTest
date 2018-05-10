@@ -2,7 +2,7 @@
   <v-card class="pb-4">
     <div>
       <v-layout class="header">
-        <div class="stores">
+        <div class="storeHeader">
           {{header}}
         </div>
         <div class="permissionCheckbox">
@@ -31,7 +31,7 @@
       <div class="seperation"></div>
         <div v-if="!stores.length" class="danger-alert">
           <br>
-          <v-text>No stores have been selected.</v-text>
+          <div>No stores have been selected.</div>
         </div>
       <v-layout column v-for="store in stores" :key="store.id">
         <v-layout  class="bodyrow" row>
@@ -288,9 +288,13 @@ export default {
   padding-top: 15px;
   padding-bottom: 30px;
 }
-
+.storeHeader {
+  width: 40%;
+}
 .stores {
   width: 40%;
+  position: relative;
+  bottom: 10px;
 }
 .permissionCheckbox {
   width: 23%;

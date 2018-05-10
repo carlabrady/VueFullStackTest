@@ -68,7 +68,6 @@
             name="report-register-form"
             autocomplete="off">
             <v-container fluid grid-list-md>
-              {{users}}
               <v-layout row wrap>
                 <v-flex xs12 sm6>
                   <v-text-field
