@@ -72,7 +72,8 @@
           class="reportList"
           v-for="report in store.reports"
           :key="report.ReportID">
-          <v-layout class="bodyrow" row>
+          <v-layout class="reportRow" row>
+            <v-spacer></v-spacer>
             <div class="reports">{{report.ReportName}}</div>
             <div class="permissionCheckbox">
               <label>
@@ -278,13 +279,20 @@ export default {
   padding-top: 15px;
   padding-bottom: 30px;
 }
+.reportRow {
+  text-align: left;
+  height: 25px;
+  padding-top: 15px;
+  padding-bottom: 30px;
+}
+
 .stores {
   width: 40%;
 }
 .permissionCheckbox {
-  width: 30%;
+  width: 23%;
 }
 .reports {
-  width: 50%;
+  width: 33%;
 }
 </style>
