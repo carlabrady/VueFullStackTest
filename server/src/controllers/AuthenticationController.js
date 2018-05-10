@@ -11,7 +11,6 @@ function jwtSignUser (user) {
 
 module.exports = {
   async register (req, res) {
-    console.log(`in register with req.body.NewUserStores ${req.body.NewUserStores}`)
     try {
       const currentUser = req.body.CurrentUser
       const stores = req.body.NewUserStores

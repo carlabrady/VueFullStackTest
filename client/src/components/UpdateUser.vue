@@ -22,45 +22,45 @@
           </v-flex>
           <v-spacer></v-spacer>
           <v-btn
-              dark
-              class="pink mt-5"
-              @click.native.stop="deleteDialog = true">
-              Delete User
-            </v-btn>
-            <v-dialog v-model="deleteDialog" max-width="290">
-              <v-card>
-                <v-card-title class="headline">Are you sure you would like to delete this user?</v-card-title>
-                <v-card-text>Please verify the user's email:
-                  <v-container grid-list-md>
-                    <v-layout wrap>
-                      <v-flex xs12>
-                        <v-text-field
-                          label="Email"
-                          type="email"
-                          v-model="email"
-                          required
-                        ></v-text-field>
-                      </v-flex>
-                    </v-layout>
-                  </v-container>
-                </v-card-text>
-                <v-card-actions>
-                  <v-btn
-                    dark
-                    class="blue"
-                    @click="deleteDialog = false">
-                    Cancel
-                  </v-btn>
-                  <v-spacer></v-spacer>
-                  <v-btn
-                    dark
-                    class="pink"
-                    @click="deleteUser">
-                    Delete User
-                  </v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
+            dark
+            class="pink mt-5"
+            @click.native.stop="deleteDialog = true">
+            Delete User
+          </v-btn>
+          <v-dialog v-model="deleteDialog" max-width="290">
+            <v-card>
+              <v-card-title class="headline">Are you sure you would like to delete this user?</v-card-title>
+              <v-card-text>Please verify the user's email:
+                <v-container grid-list-md>
+                  <v-layout wrap>
+                    <v-flex xs12>
+                      <v-text-field
+                        label="Email"
+                        type="email"
+                        v-model="email"
+                        required
+                      ></v-text-field>
+                    </v-flex>
+                  </v-layout>
+                </v-container>
+              </v-card-text>
+              <v-card-actions>
+                <v-btn
+                  dark
+                  class="blue"
+                  @click="deleteDialog = false">
+                  Cancel
+                </v-btn>
+                <v-spacer></v-spacer>
+                <v-btn
+                  dark
+                  class="pink"
+                  @click="deleteUser">
+                  Delete User
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
         </v-toolbar>
 
         <div class="pl-4 pr-4 pt-2 pb-2">
@@ -68,6 +68,7 @@
             name="report-register-form"
             autocomplete="off">
             <v-container fluid grid-list-md>
+              {{users}}
               <v-layout row wrap>
                 <v-flex xs12 sm6>
                   <v-text-field

@@ -29,7 +29,10 @@
         </div>
       </v-layout>
       <div class="seperation"></div>
-
+        <div v-if="!stores.length" class="danger-alert">
+          <br>
+          <v-text>No stores have been selected.</v-text>
+        </div>
       <v-layout column v-for="store in stores" :key="store.id">
         <v-layout  class="bodyrow" row>
           <div class="stores">
