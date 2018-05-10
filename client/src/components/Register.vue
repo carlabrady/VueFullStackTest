@@ -54,11 +54,11 @@
                 <treeselect
                   name="storeSelect"
                   placeholder="Assign stores to new user"
-                  :load-children-options="loadChildrenOptions"
                   :multiple="true"
                   :clearable="true"
                   :searchable="true"
                   :open-on-focus="true"
+                  :load-children-options="loadChildrenOptions"
                   :options="options"
                   :value-consists-of="valueConsistsOf"
                   :max-height="200"
@@ -110,16 +110,19 @@ export default {
       options: [{
         id: '1',
         label: 'Device Pitstop',
+        isDefaultExpanded: true,
         children: null
       },
       {
         id: '2',
         label: 'Clothing Exchange',
+        isDefaultExpanded: true,
         children: null
       },
       {
         id: '3',
         label: 'Children\'s Orchard',
+        isDefaultExpanded: true,
         children: null
       }]
     }
@@ -169,25 +172,24 @@ export default {
             }
           }
         })
-        console.log(DPstores, CEstores, COstores)
-      }
-      switch (parent.id) {
-        case '1': {
-          const children = DPstores
-          callback(null, children)
-          break
+        switch (parent.id) {
+          case '1': {
+            const children = DPstores
+            callback(null, children)
+            break
+          }
+          case '2': {
+            const children = CEstores
+            callback(null, children)
+            break
+          }
+          case '3': {
+            const children = COstores
+            callback(null, children)
+            break
+          }
+          default:
         }
-        case '2': {
-          const children = CEstores
-          callback(null, children)
-          break
-        }
-        case '3': {
-          const children = COstores
-          callback(null, children)
-          break
-        }
-        default:
       }
     },
     async register () {
@@ -216,7 +218,6 @@ export default {
               CanReceiveEmail: true
             }
             emailOnlyReports.push(emailOnlyReport)
-            console.log(`email reports after email loop ${emailOnlyReports}`)
           } else {
             for (let i = 0; i < Store.reports.length; i++) {
               const report = Store.reports[i]
