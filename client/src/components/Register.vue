@@ -55,10 +55,8 @@
                   name="storeSelect"
                   placeholder="Assign stores to new user"
                   :multiple="true"
-                  :clearable="true"
-                  :searchable="true"
                   :open-on-focus="true"
-                  :load-children-options="loadChildrenOptions"
+                  :load-options="loadOptions"
                   :options="options"
                   :value-consists-of="valueConsistsOf"
                   :max-height="200"
@@ -134,7 +132,12 @@ export default {
     ])
   },
   methods: {
-    async loadChildrenOptions (parent, callback/*, id */) {
+    async loadOptions ({
+      action,
+      parentNode,
+      callback
+      /*, id */
+    }) {
       const DPstores = []
       const CEstores = []
       const COstores = []
@@ -172,24 +175,29 @@ export default {
             }
           }
         })
-        switch (parent.id) {
+        switch (parentNode.id) {
           case '1': {
-            const children = DPstores
-            callback(null, children)
+            parentNode.children = DPstores
+            this.disableSelectNode(parentNode)
             break
           }
           case '2': {
-            const children = CEstores
-            callback(null, children)
+            parentNode.children = CEstores
+            this.disableSelectNode(parentNode)
             break
           }
           case '3': {
-            const children = COstores
-            callback(null, children)
+            parentNode.children = COstores
+            this.disableSelectNode(parentNode)
             break
           }
           default:
         }
+      }
+    },
+    async disableSelectNode (node) {
+      if (!node.children.length) {
+        node.isDisabled = true
       }
     },
     async register () {

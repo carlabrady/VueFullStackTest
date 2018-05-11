@@ -105,14 +105,7 @@
                   placeholder="Assign stores to new user"
                   :load-children-options="loadChildrenOptions"
                   :multiple="multiple"
-                  :clearable="clearable"
-                  :searchable="searchable"
-                  :disabled="disabled"
-                  :open-on-click="openOnClick"
-                  :open-on-focus="openOnFocus"
-                  :clear-on-select="clearOnSelect"
-                  :close-on-select="closeOnSelect"
-                  :always-open="alwaysOpen"
+                  :open-on-focus="true"
                   :options="options"
                   :value-consists-of="valueConsistsOf"
                   :max-height="200"
@@ -165,14 +158,6 @@ export default {
       userMod: false,
       error: null,
       multiple: true,
-      clearable: true,
-      searchable: true,
-      disabled: false,
-      openOnClick: true,
-      openOnFocus: false,
-      clearOnSelect: true,
-      closeOnSelect: false,
-      alwaysOpen: false,
       valueFormat: 'object',
       value: [],
       users: [],
